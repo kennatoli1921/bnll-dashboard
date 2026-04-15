@@ -424,8 +424,8 @@
             <img src="bnll.png" alt="BNLL Logo" class="header-logo">
             <div class="header-content">
                 <h1>BNLL 2026 Schedule</h1>
-                <p>Bend North Little League \u00b7 AAA Division</p>
-                <p><a href="https://bnll.org" target="_blank">Visit bnll.org \u2192</a></p>
+                <p>Bend North Little League · AAA Division</p>
+                <p><a href="https://bnll.org" target="_blank">Visit bnll.org →</a></p>
                 <div class="last-updated" id="lastUpdated"></div>
             </div>
         </div>
@@ -444,7 +444,7 @@
         </div>
         
         <div class="refresh-indicator">
-            <p>Auto-refreshing every 4 hours &bull; Last refresh: <span id="refreshTime">Just now</span></p>
+            <p>📡 Auto-refreshing every 4 hours • Last refresh: <span id="refreshTime">Just now</span></p>
         </div>
     </div>
 
@@ -454,6 +454,7 @@
         const PRACTICES_SHEET_ID = '1KFTAMAi0vVP4tSvT_9p6hJB22JLKIFdaMpLzRy966LI';
         const PRACTICES_GID = '558705749';
         
+        // MLB team logo URLs from mlbstatic.com (team ID based)
         const teamLogoMap = {
             'BREWERS':      'https://www.mlbstatic.com/team-logos/158.svg',
             'ORIOLES':      'https://www.mlbstatic.com/team-logos/110.svg',
@@ -539,7 +540,7 @@
         
         function renderWeekSelector() {
             const data = currentTab === 'games' ? allGames : allPractices;
-            const weeks = [...new Set(data.map(g => getWeekNumber(g.date)).filter(w => !isNaN(w)))].sort((a, b) => a - b);
+            const weeks = [...new Set(data.map(g => getWeekNumber(g.date || g.date)).filter(w => !isNaN(w)))].sort((a, b) => a - b);
             
             if (weeks.length === 0) {
                 document.getElementById('weekSelector').innerHTML = '';
@@ -551,6 +552,7 @@
             }
             
             const selector = document.getElementById('weekSelector');
+            const sample = data.find(d => getWeekNumber(d.date) === weeks[0]);
             selector.innerHTML = weeks.map(w => {
                 const sample = data.find(d => getWeekNumber(d.date) === w);
                 return `<button class="week-btn ${w === selectedWeek ? 'active' : ''}" data-week="${w}" onclick="selectWeek(${w})">${getWeekLabel(sample.date)}</button>`;
@@ -640,7 +642,7 @@
                 <div class="game-card">
                     <div class="game-when">
                         <div class="game-date">${formatDate(game.date)}</div>
-                        <div class="game-time">${game.startTime || game.time || '\u2014'}</div>
+                        <div class="game-time">${game.startTime || game.time || '—'}</div>
                     </div>
                     <div class="game-matchup">
                         <div class="team">
@@ -656,15 +658,15 @@
                     <div class="game-details">
                         <div class="detail-item">
                             <div class="detail-label">Field</div>
-                            <div class="detail-value">${game.field || '\u2014'}</div>
+                            <div class="detail-value">${game.field || '—'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Plate Ump</div>
-                            <div class="detail-value">${game.plateUmpire || '\u2014'}</div>
+                            <div class="detail-value">${game.plateUmpire || '—'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Field Ump</div>
-                            <div class="detail-value">${game.fieldUmpire || '\u2014'}</div>
+                            <div class="detail-value">${game.fieldUmpire || '—'}</div>
                         </div>
                     </div>
                 </div>
@@ -688,20 +690,20 @@
                 <div class="practice-card">
                     <div class="practice-header">
                         <div class="practice-date">${formatDate(practice.date)}</div>
-                        <div class="practice-time">${practice.time || '\u2014'}</div>
+                        <div class="practice-time">${practice.time || '—'}</div>
                     </div>
                     <div class="practice-details">
                         <div class="practice-item">
                             <div class="practice-label">Team</div>
-                            <div class="practice-value">${practice.team || '\u2014'}</div>
+                            <div class="practice-value">${practice.team || '—'}</div>
                         </div>
                         <div class="practice-item">
                             <div class="practice-label">Field</div>
-                            <div class="practice-value">${practice.field || '\u2014'}</div>
+                            <div class="practice-value">${practice.field || '—'}</div>
                         </div>
                         <div class="practice-item">
                             <div class="practice-label">Coach/Manager</div>
-                            <div class="practice-value">${practice.coach || '\u2014'}</div>
+                            <div class="practice-value">${practice.coach || '—'}</div>
                         </div>
                     </div>
                 </div>
@@ -712,6 +714,7 @@
             const lines = csv.trim().split('\n');
             const games = [];
             
+            // Find header row
             let headerIdx = -1;
             for (let i = 0; i < Math.min(5, lines.length); i++) {
                 if (lines[i].includes('Home Team')) {
@@ -753,6 +756,7 @@
             const lines = csv.trim().split('\n');
             const practices = [];
 
+            // Find header row
             let headerIdx = -1;
             for (let i = 0; i < Math.min(5, lines.length); i++) {
                 const lower = lines[i].toLowerCase();
@@ -791,6 +795,7 @@
             try {
                 document.getElementById('gamesContainer').innerHTML = '<div class="loading">Loading schedule...</div>';
 
+                // Fetch games and practices in parallel
                 const [gamesCsv, practicesCsv] = await Promise.all([
                     fetch(`https://docs.google.com/spreadsheets/d/${GAMES_SHEET_ID}/export?format=csv&gid=${GAMES_GID}`).then(r => r.text()),
                     fetch(`https://docs.google.com/spreadsheets/d/${PRACTICES_SHEET_ID}/export?format=csv&gid=${PRACTICES_GID}`).then(r => r.text())
@@ -802,6 +807,7 @@
                 allPractices = parsePracticesSheet(practicesCsv).filter(p => p.date);
                 allPractices.sort((a, b) => new Date(a.date) - new Date(b.date));
 
+                // Update last updated time
                 document.getElementById('lastUpdated').textContent = `Last updated: ${new Date().toLocaleString()}`;
                 document.getElementById('refreshTime').textContent = new Date().toLocaleTimeString();
 
@@ -813,9 +819,11 @@
                 document.getElementById('gamesContainer').innerHTML = `<div class="error">Unable to load schedule. Please check your internet connection and try refreshing.</div>`;
             }
 
+            // Schedule next refresh
             setTimeout(loadData, 4 * 60 * 60 * 1000);
         }
         
+        // Initial load
         loadData();
     </script>
 </body>
