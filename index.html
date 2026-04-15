@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNLL 2026 Schedule</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%);
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .header-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        
+        .header-content h1 {
+            font-size: 28px;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+        
+        .header-content p {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header-content a {
+            color: #2c5aa0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .header-content a:hover {
+            text-decoration: underline;
+        }
+        
+        .last-updated {
+            font-size: 12px;
+            color: #999;
+            margin-top: 0.5rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .tab-btn {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .tab-btn.active {
+            background: #2c5aa0;
+            color: white;
+            border-color: #2c5aa0;
+        }
+        
+        .tab-btn:hover:not(.active) {
+            border-color: #999;
+            background: #f9f9f9;
+        }
+        
+        .week-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .week-btn {
+            padding: 0.6rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .week-btn.active {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        
+        .week-btn:hover:not(.active) {
+            border-color: #999;
+        }
+        
+        .games-container {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: box-shadow 0.2s;
+        }
+        
+        .game-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        
+        .game-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .game-date {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .game-time {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2c5aa0;
+            background: #e8f0ff;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+        }
+        
+        .game-matchup {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            flex: 1;
+            min-width: 80px;
+        }
+        
+        .team-logo {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+        
+        .team-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .vs {
+            font-size: 13px;
+            color: #ccc;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .game-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.3px;
+        }
+        
+        .detail-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .practice-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            border-left: 4px solid #ff9800;
+        }
+        
+        .practice-header {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .practice-date {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        
+        .practice-time {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ff9800;
+            background: #fff8e1;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+        }
+        
+        .practice-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+        
+        .practice-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .practice-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        
+        .practice-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .no-games {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            text-align: center;
+            color: #999;
+            font-size: 15px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2.5rem;
+            color: #999;
+            font-size: 15px;
+        }
+        
+        .error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 14px;
+        }
+        
+        .refresh-indicator {
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+        
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .header-logo {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .game-matchup {
+                gap: 1rem;
+            }
+            
+            .game-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .week-selector {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='95' fill='white' stroke='%23c41e3a' stroke-width='8'/%3E%3Ccircle cx='100' cy='100' r='85' fill='none' stroke='%23002868' stroke-width='4'/%3E%3Ctext x='100' y='90' font-size='48' font-weight='bold' fill='%23002868' text-anchor='middle'%3EB%3C/text%3E%3Ctext x='100' y='130' font-size='20' font-weight='bold' fill='%23002868' text-anchor='middle'%3EBNLL%3C/text%3E%3C/svg%3E" alt="BNLL Logo" class="header-logo">
+            <div class="header-content">
+                <h1>BNLL 2026 Schedule</h1>
+                <p>Bend North Little League · AAA Division</p>
+                <p><a href="https://bnll.org" target="_blank">Visit bnll.org →</a></p>
+                <div class="last-updated" id="lastUpdated"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('games')">Games</button>
+                <button class="tab-btn" onclick="switchTab('practices')">Practices</button>
+            </div>
+            <div class="week-selector" id="weekSelector"></div>
+        </div>
+        
+        <div id="gamesContainer" class="games-container">
+            <div class="loading">Loading schedule...</div>
+        </div>
+        
+        <div class="refresh-indicator">
+            <p>Auto-refreshing every 4 hours &bull; Last refresh: <span id="refreshTime">Just now</span></p>
+        </div>
+    </div>
+
+    <script>
+        const GAMES_SHEET_ID = '12J8Wp88eVR3vQhuRcziJwdO2VY_SbgTw';
+        const GAMES_GID = '514974197';
+        const PRACTICES_SHEET_ID = '1KFTAMAi0vVP4tSvT_9p6hJB22JLKIFdaMpLzRy966LI';
+        const PRACTICES_GID = '558705749';
+        
+        // MLB team logo URLs from mlbstatic.com (team ID based)
+        const teamLogoMap = {
+            'BREWERS':      'https://www.mlbstatic.com/team-logos/158.svg',
+            'ORIOLES':      'https://www.mlbstatic.com/team-logos/110.svg',
+            'DODGERS':      'https://www.mlbstatic.com/team-logos/119.svg',
+            'DIAMONDBACKS': 'https://www.mlbstatic.com/team-logos/109.svg',
+            'BRAVES':       'https://www.mlbstatic.com/team-logos/144.svg',
+            'NATIONALS':    'https://www.mlbstatic.com/team-logos/120.svg',
+            'GIANTS':       'https://www.mlbstatic.com/team-logos/137.svg',
+            'BLUE JAYS':    'https://www.mlbstatic.com/team-logos/141.svg',
+            'RANGERS':      'https://www.mlbstatic.com/team-logos/140.svg',
+            'GUARDIANS':    'https://www.mlbstatic.com/team-logos/114.svg'
+        };
+        
+        let allGames = [];
+        let allPractices = [];
+        let selectedWeek = null;
+        let currentTab = 'games';
+        
+        function getTeamLogo(teamName) {
+            return teamLogoMap[teamName] || createDefaultLogo(teamName);
+        }
+        
+        function createDefaultLogo(name) {
+            const initials = name.substring(0, 2).toUpperCase();
+            return `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23999" width="100" height="100"/%3E%3Ctext x="50" y="60" font-size="32" font-weight="bold" fill="%23FFF" text-anchor="middle"%3E${initials}%3C/text%3E%3C/svg%3E`;
+        }
+        
+        function getWeekNumber(dateStr) {
+            if (typeof dateStr !== 'string') return 0;
+            const parts = dateStr.split('/');
+            if (parts.length !== 3) return 0;
+            const date = new Date(parts[2], parts[0] - 1, parts[1]);
+            const start = new Date(date.getFullYear(), 0, 1);
+            const diff = date - start;
+            const oneWeek = 1000 * 60 * 60 * 24 * 7;
+            return Math.floor(diff / oneWeek);
+        }
+        
+        function getWeekLabel(dateStr) {
+            if (typeof dateStr !== 'string') return 'Unknown';
+            const parts = dateStr.split('/');
+            if (parts.length !== 3) return dateStr;
+            const date = new Date(parts[2], parts[0] - 1, parts[1]);
+            const weekStart = new Date(date);
+            weekStart.setDate(date.getDate() - date.getDay());
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekStart.getDate() + 6);
+            
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${monthNames[weekStart.getMonth()]} ${weekStart.getDate()} - ${monthNames[weekEnd.getMonth()]} ${weekEnd.getDate()}`;
+        }
+        
+        function formatDate(dateStr) {
+            if (typeof dateStr !== 'string') return 'Unknown';
+            const parts = dateStr.split('/');
+            if (parts.length !== 3) return dateStr;
+            const date = new Date(parts[2], parts[0] - 1, parts[1]);
+            return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        }
+        
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', (i === 0 && tab === 'games') || (i === 1 && tab === 'practices'));
+            });
+            selectedWeek = null;
+            renderWeekSelector();
+            renderContent();
+        }
+        
+        function selectWeek(weekNum) {
+            selectedWeek = weekNum;
+            document.querySelectorAll('.week-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.week == weekNum);
+            });
+            renderContent();
+        }
+        
+        function renderWeekSelector() {
+            const data = currentTab === 'games' ? allGames : allPractices;
+            const weeks = [...new Set(data.map(g => getWeekNumber(g.date || g.date)).filter(w => !isNaN(w)))].sort((a, b) => a - b);
+            
+            if (weeks.length === 0) {
+                document.getElementById('weekSelector').innerHTML = '';
+                return;
+            }
+            
+            if (selectedWeek === null || !weeks.includes(selectedWeek)) {
+                selectedWeek = weeks[0];
+            }
+            
+            const selector = document.getElementById('weekSelector');
+            selector.innerHTML = weeks.map(w => {
+                const sample = data.find(d => getWeekNumber(d.date) === w);
+                return `<button class="week-btn ${w === selectedWeek ? 'active' : ''}" data-week="${w}" onclick="selectWeek(${w})">${getWeekLabel(sample.date)}</button>`;
+            }).join('');
+        }
+        
+        function renderContent() {
+            if (currentTab === 'games') {
+                renderGames();
+            } else {
+                renderPractices();
+            }
+        }
+        
+        function renderGames() {
+            const container = document.getElementById('gamesContainer');
+            let gamesToShow = allGames;
+            
+            if (selectedWeek !== null) {
+                gamesToShow = allGames.filter(g => getWeekNumber(g.date) === selectedWeek);
+            }
+            
+            if (gamesToShow.length === 0) {
+                container.innerHTML = '<div class="no-games">No games scheduled this week</div>';
+                return;
+            }
+            
+            container.innerHTML = gamesToShow.map(game => `
+                <div class="game-card">
+                    <div class="game-header">
+                        <div class="game-date">${formatDate(game.date)}</div>
+                        <div class="game-time">${game.startTime || game.time || '\u2014'}</div>
+                    </div>
+                    <div class="game-matchup">
+                        <div class="team">
+                            <img src="${getTeamLogo(game.homeTeam)}" alt="${game.homeTeam}" class="team-logo" onerror="this.onerror=null;this.src='${createDefaultLogo(game.homeTeam)}'">
+                            <div class="team-name">${game.homeTeam}</div>
+                        </div>
+                        <div class="vs">vs</div>
+                        <div class="team">
+                            <img src="${getTeamLogo(game.awayTeam)}" alt="${game.awayTeam}" class="team-logo" onerror="this.onerror=null;this.src='${createDefaultLogo(game.awayTeam)}'">
+                            <div class="team-name">${game.awayTeam}</div>
+                        </div>
+                    </div>
+                    <div class="game-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Field</div>
+                            <div class="detail-value">${game.field || '\u2014'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Plate Umpire</div>
+                            <div class="detail-value">${game.plateUmpire || '\u2014'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Field Umpire</div>
+                            <div class="detail-value">${game.fieldUmpire || '\u2014'}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function renderPractices() {
+            const container = document.getElementById('gamesContainer');
+            let practicesToShow = allPractices;
+            
+            if (selectedWeek !== null) {
+                practicesToShow = allPractices.filter(p => getWeekNumber(p.date) === selectedWeek);
+            }
+            
+            if (practicesToShow.length === 0) {
+                container.innerHTML = '<div class="no-games">No practices scheduled this week</div>';
+                return;
+            }
+            
+            container.innerHTML = practicesToShow.map(practice => `
+                <div class="practice-card">
+                    <div class="practice-header">
+                        <div class="practice-date">${formatDate(practice.date)}</div>
+                        <div class="practice-time">${practice.time || '\u2014'}</div>
+                    </div>
+                    <div class="practice-details">
+                        <div class="practice-item">
+                            <div class="practice-label">Team</div>
+                            <div class="practice-value">${practice.team || '\u2014'}</div>
+                        </div>
+                        <div class="practice-item">
+                            <div class="practice-label">Field</div>
+                            <div class="practice-value">${practice.field || '\u2014'}</div>
+                        </div>
+                        <div class="practice-item">
+                            <div class="practice-label">Coach/Manager</div>
+                            <div class="practice-value">${practice.coach || '\u2014'}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function parseGamesSheet(csv) {
+            const lines = csv.trim().split('\n');
+            const games = [];
+            
+            let headerIdx = -1;
+            for (let i = 0; i < Math.min(5, lines.length); i++) {
+                if (lines[i].includes('Home Team')) {
+                    headerIdx = i;
+                    break;
+                }
+            }
+            
+            if (headerIdx === -1) return [];
+            
+            const headers = lines[headerIdx].split(',').map(h => h.trim().toLowerCase());
+            const dateIdx = headers.findIndex(h => h.includes('date'));
+            const homeIdx = headers.findIndex(h => h.includes('home'));
+            const awayIdx = headers.findIndex(h => h.includes('away'));
+            const timeIdx = headers.findIndex(h => h.includes('start time'));
+            const fieldIdx = headers.findIndex(h => h.includes('field'));
+            const plateIdx = headers.findIndex(h => h.includes('plate'));
+            const fieldUmpIdx = headers.findIndex(h => h.includes('field umpire name'));
+            
+            for (let i = headerIdx + 1; i < lines.length; i++) {
+                const cells = lines[i].split(',').map(c => c.trim());
+                if (!cells[dateIdx]) continue;
+                
+                games.push({
+                    date: cells[dateIdx],
+                    homeTeam: cells[homeIdx] || '',
+                    awayTeam: cells[awayIdx] || '',
+                    startTime: cells[timeIdx] || '',
+                    field: cells[fieldIdx] || '',
+                    plateUmpire: cells[plateIdx] || '',
+                    fieldUmpire: cells[fieldUmpIdx] || ''
+                });
+            }
+            
+            return games;
+        }
+        
+        function parsePracticesSheet(csv) {
+            const lines = csv.trim().split('\n');
+            const practices = [];
+
+            let headerIdx = -1;
+            for (let i = 0; i < Math.min(5, lines.length); i++) {
+                const lower = lines[i].toLowerCase();
+                if (lower.includes('date') || lower.includes('team')) {
+                    headerIdx = i;
+                    break;
+                }
+            }
+
+            if (headerIdx === -1) return [];
+
+            const headers = lines[headerIdx].split(',').map(h => h.trim().toLowerCase());
+            const dateIdx = headers.findIndex(h => h.includes('date'));
+            const timeIdx = headers.findIndex(h => h.includes('time'));
+            const teamIdx = headers.findIndex(h => h.includes('team'));
+            const fieldIdx = headers.findIndex(h => h.includes('field') || h.includes('location'));
+            const coachIdx = headers.findIndex(h => h.includes('coach') || h.includes('manager'));
+
+            for (let i = headerIdx + 1; i < lines.length; i++) {
+                const cells = lines[i].split(',').map(c => c.trim());
+                if (!cells[dateIdx]) continue;
+
+                practices.push({
+                    date: cells[dateIdx] || '',
+                    time: cells[timeIdx] || '',
+                    team: cells[teamIdx] || '',
+                    field: cells[fieldIdx] || '',
+                    coach: cells[coachIdx] || ''
+                });
+            }
+
+            return practices;
+        }
+
+        async function loadData() {
+            try {
+                document.getElementById('gamesContainer').innerHTML = '<div class="loading">Loading schedule...</div>';
+
+                const [gamesCsv, practicesCsv] = await Promise.all([
+                    fetch(`https://docs.google.com/spreadsheets/d/${GAMES_SHEET_ID}/export?format=csv&gid=${GAMES_GID}`).then(r => r.text()),
+                    fetch(`https://docs.google.com/spreadsheets/d/${PRACTICES_SHEET_ID}/export?format=csv&gid=${PRACTICES_GID}`).then(r => r.text())
+                ]);
+
+                allGames = parseGamesSheet(gamesCsv).filter(g => g.homeTeam && g.awayTeam);
+                allGames.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                allPractices = parsePracticesSheet(practicesCsv).filter(p => p.date);
+                allPractices.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                document.getElementById('lastUpdated').textContent = `Last updated: ${new Date().toLocaleString()}`;
+                document.getElementById('refreshTime').textContent = new Date().toLocaleTimeString();
+
+                renderWeekSelector();
+                renderContent();
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('gamesContainer').innerHTML = `<div class="error">Unable to load schedule. Please check your internet connection and try refreshing.</div>`;
+            }
+
+            setTimeout(loadData, 4 * 60 * 60 * 1000);
+        }
+        
+        loadData();
+    </script>
+</body>
+</html>
