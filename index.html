@@ -141,115 +141,163 @@
         
         .games-container {
             display: grid;
-            gap: 1rem;
+            gap: 0.5rem;
         }
-        
+
         .game-card {
             background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            transition: box-shadow 0.2s;
-        }
-        
-        .game-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-        }
-        
-        .game-header {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
             gap: 1rem;
-        }
-        
-        .game-date {
-            font-size: 12px;
-            color: #999;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        
-        .game-time {
-            font-size: 15px;
-            font-weight: 700;
-            color: #2c5aa0;
-            background: #e8f0ff;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-        }
-        
-        .game-matchup {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
             flex-wrap: wrap;
         }
-        
-        .team {
+
+        .game-when {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 0.6rem;
-            flex: 1;
-            min-width: 80px;
-        }
-        
-        .team-logo {
-            width: 56px;
-            height: 56px;
-            object-fit: contain;
-            border-radius: 4px;
-        }
-        
-        .team-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #1a1a1a;
-            text-align: center;
-            line-height: 1.2;
-        }
-        
-        .vs {
-            font-size: 13px;
-            color: #ccc;
-            font-weight: 700;
+            align-items: flex-start;
+            min-width: 90px;
             flex-shrink: 0;
         }
-        
-        .game-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-            border-top: 1px solid #eee;
-            padding-top: 1rem;
-        }
-        
-        .detail-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .detail-label {
+
+        .game-date {
             font-size: 11px;
             color: #999;
             text-transform: uppercase;
             font-weight: 700;
-            margin-bottom: 0.4rem;
+            letter-spacing: 0.4px;
+        }
+
+        .game-time {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c5aa0;
+        }
+
+        .game-matchup {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .team {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .team-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .team-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .vs {
+            font-size: 11px;
+            color: #ccc;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .game-details {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            margin-left: auto;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 10px;
+            color: #bbb;
+            text-transform: uppercase;
+            font-weight: 700;
             letter-spacing: 0.3px;
         }
-        
+
         .detail-value {
-            font-size: 14px;
-            color: #333;
+            font-size: 13px;
+            color: #444;
             font-weight: 500;
         }
         
+        .standings-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            overflow: hidden;
+            border-collapse: collapse;
+        }
+
+        .standings-table th {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            padding: 0.6rem 0.75rem;
+            text-align: right;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .standings-table th:first-child {
+            text-align: left;
+        }
+
+        .standings-table td {
+            padding: 0.55rem 0.75rem;
+            font-size: 13px;
+            color: #333;
+            text-align: right;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .standings-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .standings-table td:first-child {
+            text-align: left;
+        }
+
+        .standings-team {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .standings-team img {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+
+        .strk-w { color: #28a745; font-weight: 700; }
+        .strk-l { color: #dc3545; font-weight: 700; }
+
+        .standings-table tr:hover td {
+            background: #f9f9f9;
+        }
+
         .practice-card {
             background: white;
             border-radius: 10px;
@@ -373,11 +421,11 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='95' fill='white' stroke='%23c41e3a' stroke-width='8'/%3E%3Ccircle cx='100' cy='100' r='85' fill='none' stroke='%23002868' stroke-width='4'/%3E%3Ctext x='100' y='90' font-size='48' font-weight='bold' fill='%23002868' text-anchor='middle'%3EB%3C/text%3E%3Ctext x='100' y='130' font-size='20' font-weight='bold' fill='%23002868' text-anchor='middle'%3EBNLL%3C/text%3E%3C/svg%3E" alt="BNLL Logo" class="header-logo">
+            <img src="bnll.png" alt="BNLL Logo" class="header-logo">
             <div class="header-content">
                 <h1>BNLL 2026 Schedule</h1>
-                <p>Bend North Little League · AAA Division</p>
-                <p><a href="https://bnll.org" target="_blank">Visit bnll.org →</a></p>
+                <p>Bend North Little League \u00b7 AAA Division</p>
+                <p><a href="https://bnll.org" target="_blank">Visit bnll.org \u2192</a></p>
                 <div class="last-updated" id="lastUpdated"></div>
             </div>
         </div>
@@ -386,6 +434,7 @@
             <div class="tab-buttons">
                 <button class="tab-btn active" onclick="switchTab('games')">Games</button>
                 <button class="tab-btn" onclick="switchTab('practices')">Practices</button>
+                <button class="tab-btn" onclick="switchTab('standings')">Standings</button>
             </div>
             <div class="week-selector" id="weekSelector"></div>
         </div>
@@ -405,7 +454,6 @@
         const PRACTICES_SHEET_ID = '1KFTAMAi0vVP4tSvT_9p6hJB22JLKIFdaMpLzRy966LI';
         const PRACTICES_GID = '558705749';
         
-        // MLB team logo URLs from mlbstatic.com (team ID based)
         const teamLogoMap = {
             'BREWERS':      'https://www.mlbstatic.com/team-logos/158.svg',
             'ORIOLES':      'https://www.mlbstatic.com/team-logos/110.svg',
@@ -469,9 +517,14 @@
         function switchTab(tab) {
             currentTab = tab;
             document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', (i === 0 && tab === 'games') || (i === 1 && tab === 'practices'));
+                btn.classList.toggle('active',
+                    (i === 0 && tab === 'games') ||
+                    (i === 1 && tab === 'practices') ||
+                    (i === 2 && tab === 'standings')
+                );
             });
             selectedWeek = null;
+            document.getElementById('weekSelector').style.display = tab === 'standings' ? 'none' : '';
             renderWeekSelector();
             renderContent();
         }
@@ -486,7 +539,7 @@
         
         function renderWeekSelector() {
             const data = currentTab === 'games' ? allGames : allPractices;
-            const weeks = [...new Set(data.map(g => getWeekNumber(g.date || g.date)).filter(w => !isNaN(w)))].sort((a, b) => a - b);
+            const weeks = [...new Set(data.map(g => getWeekNumber(g.date)).filter(w => !isNaN(w)))].sort((a, b) => a - b);
             
             if (weeks.length === 0) {
                 document.getElementById('weekSelector').innerHTML = '';
@@ -504,30 +557,88 @@
             }).join('');
         }
         
+        const standings = [
+            { team: 'GUARDIANS', w: 3, l: 0, t: 0, pct: '1.000', gb: '-',  rs: 45, ra: 16, diff: 29,  strk: 'W3', home: '0-0', away: '3-0' },
+            { team: 'RANGERS',   w: 2, l: 1, t: 0, pct: '0.667', gb: '1.0', rs: 31, ra: 28, diff: 3,   strk: 'W2', home: '0-1', away: '2-0' },
+            { team: 'DODGERS',   w: 2, l: 1, t: 0, pct: '0.667', gb: '1.0', rs: 27, ra: 25, diff: 2,   strk: 'W1', home: '1-1', away: '1-0' },
+            { team: 'BREWERS',   w: 2, l: 1, t: 0, pct: '0.667', gb: '1.0', rs: 34, ra: 35, diff: -1,  strk: 'W1', home: '1-1', away: '1-0' },
+            { team: 'NATIONALS', w: 1, l: 1, t: 0, pct: '0.500', gb: '1.5', rs: 25, ra: 23, diff: 2,   strk: 'W1', home: '0-0', away: '1-1' },
+            { team: 'BRAVES',    w: 1, l: 1, t: 0, pct: '0.500', gb: '1.5', rs: 26, ra: 26, diff: 0,   strk: 'L1', home: '1-1', away: '0-0' },
+            { team: 'ORIOLES',   w: 1, l: 2, t: 0, pct: '0.333', gb: '2.0', rs: 33, ra: 34, diff: -1,  strk: 'L1', home: '1-1', away: '0-1' },
+            { team: 'DIAMONDBACKS', w: 0, l: 1, t: 0, pct: '0.000', gb: '2.0', rs: 3,  ra: 9,  diff: -6,  strk: 'L1', home: '0-0', away: '0-1' },
+            { team: 'GIANTS',    w: 1, l: 2, t: 0, pct: '0.333', gb: '2.0', rs: 21, ra: 39, diff: -18, strk: 'L2', home: '1-2', away: '0-0' },
+            { team: 'BLUE JAYS', w: 0, l: 3, t: 0, pct: '0.000', gb: '3.0', rs: 27, ra: 36, diff: -9,  strk: 'L3', home: '0-1', away: '0-2' },
+        ];
+
+        function renderStandings() {
+            const container = document.getElementById('gamesContainer');
+            container.innerHTML = `
+                <table class="standings-table">
+                    <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th>W</th><th>L</th><th>T</th>
+                            <th>PCT</th><th>GB</th>
+                            <th>RS</th><th>RA</th><th>DIFF</th>
+                            <th>STRK</th><th>HOME</th><th>AWAY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${standings.map(s => `
+                        <tr>
+                            <td>
+                                <div class="standings-team">
+                                    <img src="${getTeamLogo(s.team)}" alt="${s.team}" onerror="this.onerror=null;this.src='${createDefaultLogo(s.team)}'">
+                                    ${s.team}
+                                </div>
+                            </td>
+                            <td>${s.w}</td><td>${s.l}</td><td>${s.t}</td>
+                            <td>${s.pct}</td><td>${s.gb}</td>
+                            <td>${s.rs}</td><td>${s.ra}</td>
+                            <td class="${s.diff > 0 ? 'strk-w' : s.diff < 0 ? 'strk-l' : ''}">${s.diff > 0 ? '+' : ''}${s.diff}</td>
+                            <td class="${s.strk.startsWith('W') ? 'strk-w' : 'strk-l'}">${s.strk}</td>
+                            <td>${s.home}</td><td>${s.away}</td>
+                        </tr>`).join('')}
+                    </tbody>
+                </table>`;
+        }
+
         function renderContent() {
             if (currentTab === 'games') {
                 renderGames();
-            } else {
+            } else if (currentTab === 'practices') {
                 renderPractices();
+            } else {
+                renderStandings();
             }
         }
         
+        function isUpcoming(dateStr) {
+            if (typeof dateStr !== 'string') return false;
+            const parts = dateStr.split('/');
+            if (parts.length !== 3) return false;
+            const gameDate = new Date(parts[2], parts[0] - 1, parts[1]);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return gameDate >= today;
+        }
+
         function renderGames() {
             const container = document.getElementById('gamesContainer');
-            let gamesToShow = allGames;
-            
+            let gamesToShow = allGames.filter(g => isUpcoming(g.date));
+
             if (selectedWeek !== null) {
-                gamesToShow = allGames.filter(g => getWeekNumber(g.date) === selectedWeek);
+                gamesToShow = gamesToShow.filter(g => getWeekNumber(g.date) === selectedWeek);
             }
-            
+
             if (gamesToShow.length === 0) {
-                container.innerHTML = '<div class="no-games">No games scheduled this week</div>';
+                container.innerHTML = '<div class="no-games">No upcoming games this week</div>';
                 return;
             }
-            
+
             container.innerHTML = gamesToShow.map(game => `
                 <div class="game-card">
-                    <div class="game-header">
+                    <div class="game-when">
                         <div class="game-date">${formatDate(game.date)}</div>
                         <div class="game-time">${game.startTime || game.time || '\u2014'}</div>
                     </div>
@@ -548,11 +659,11 @@
                             <div class="detail-value">${game.field || '\u2014'}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">Plate Umpire</div>
+                            <div class="detail-label">Plate Ump</div>
                             <div class="detail-value">${game.plateUmpire || '\u2014'}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">Field Umpire</div>
+                            <div class="detail-label">Field Ump</div>
                             <div class="detail-value">${game.fieldUmpire || '\u2014'}</div>
                         </div>
                     </div>
@@ -562,17 +673,17 @@
         
         function renderPractices() {
             const container = document.getElementById('gamesContainer');
-            let practicesToShow = allPractices;
-            
+            let practicesToShow = allPractices.filter(p => isUpcoming(p.date));
+
             if (selectedWeek !== null) {
-                practicesToShow = allPractices.filter(p => getWeekNumber(p.date) === selectedWeek);
+                practicesToShow = practicesToShow.filter(p => getWeekNumber(p.date) === selectedWeek);
             }
-            
+
             if (practicesToShow.length === 0) {
-                container.innerHTML = '<div class="no-games">No practices scheduled this week</div>';
+                container.innerHTML = '<div class="no-games">No upcoming practices this week</div>';
                 return;
             }
-            
+
             container.innerHTML = practicesToShow.map(practice => `
                 <div class="practice-card">
                     <div class="practice-header">
