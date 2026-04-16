@@ -236,6 +236,26 @@
         .practice-cell { color: #333; line-height: 1.4; }
 
         /* ── Rules ── */
+        .rules-div-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.375rem;
+            margin-bottom: 1rem;
+        }
+        .rules-div-btn {
+            padding: 0.4rem 0.85rem;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            color: #555;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .rules-div-btn.active { background: #2c5aa0; color: white; border-color: #2c5aa0; font-weight: 700; }
+        .rules-div-btn:hover:not(.active) { border-color: #999; color: #222; background: #f9f9f9; }
         .rules-content {
             background: white;
             border-radius: 10px;
@@ -744,19 +764,40 @@
     }
 
     // ── Rules ─────────────────────────────────────────────────────────────────
-    function renderRules() {
-        document.getElementById('gamesContainer').innerHTML = `
-        <div class="rules-content">
-            <h2>AAA Ball (Age 10) &mdash; League Rules</h2>
-            <p class="rules-source">Source: <a href="https://www.bnll.org/Default.aspx?tabid=1258613" target="_blank">bnll.org</a></p>
+    const DIVISIONS = [
+        { id: 'aaa',     label: 'AAA',      age: 'Age 9–10' },
+        { id: 'aa',      label: 'AA',       age: 'Age 8–9' },
+        { id: 'aball',   label: 'A Ball',   age: 'Age 7–8' },
+        { id: 'rookie',  label: 'Rookie',   age: 'Age 6–7' },
+        { id: 'peewee',  label: 'Pee Wee',  age: 'Age 5–6' },
+        { id: 'tball',   label: 'T-Ball',   age: 'Age 4–5' },
+        { id: 'majors',  label: 'Majors',   age: 'Age 11–12' },
+        { id: 'juniors', label: 'Juniors',  age: 'Age 13–14' },
+    ];
 
+    const PITCH_TABLE_HTML = `
+        <table class="pitch-table">
+            <thead><tr><th>Pitches Thrown</th><th>Rest Required</th></tr></thead>
+            <tbody>
+                <tr><td>0 – 20</td><td>No rest required</td></tr>
+                <tr><td>21 – 35</td><td>1 calendar day</td></tr>
+                <tr><td>36 – 50</td><td>2 calendar days</td></tr>
+                <tr><td>51 – 65</td><td>3 calendar days</td></tr>
+                <tr><td>66 – 85</td><td>4 calendar days</td></tr>
+            </tbody>
+        </table>`;
+
+    const DIVISION_RULES = {
+        aaa: `
+            <h2>AAA Ball (Age 9–10) &mdash; League Rules</h2>
+            <p class="rules-source">Source: <a href="https://www.bnll.org/Default.aspx?tabid=1258613" target="_blank">bnll.org</a></p>
             <div class="rules-section">
                 <h3>General Playing Rules</h3>
                 <ul class="rules-list">
                     <li><span class="rule-num">1</span><span>All managers will bat the entire lineup. If a player is injured or must leave, that player is skipped in the batting order and shall not be recorded as an out.</span></li>
                     <li><span class="rule-num">2</span><span>Emphasis on teaching fundamental baseball skills to all players.</span></li>
                     <li><span class="rule-num">3</span><span>Coaches must make efforts to rotate all participants through both infield and outfield positions during games, unless injury risk exists.</span></li>
-                    <li><span class="rule-num">4</span><span>There will be no stealing of home plate unless the ball clearly passes the catcher or pitcher.</span></li>
+                    <li><span class="rule-num">4</span><span>No stealing home plate unless the ball clearly passes the catcher or pitcher. <strong>Batters may not steal or advance on an overthrow from the catcher back to the pitcher.</strong></span></li>
                     <li><span class="rule-num">5</span><span>Once a pitcher gains control of the ball from the catcher, all base runners must return immediately to their bases.</span></li>
                     <li><span class="rule-num">6</span><span>No mercy rule applies during the regular season.</span></li>
                     <li><span class="rule-num">7</span><span>Teams are limited to <strong>5 runs per inning</strong>, except the final inning which allows unlimited scoring with 10 at-bats.</span></li>
@@ -771,37 +812,170 @@
                     <li><span class="rule-num">16</span><span>All managers must umpire non-assigned games; failure to appear results in suspension from the next game.</span></li>
                 </ul>
             </div>
-
             <div class="rules-section">
                 <h3>Pitch Count &amp; Rest Requirements</h3>
-                <table class="pitch-table">
-                    <thead><tr><th>Pitches Thrown</th><th>Rest Required</th></tr></thead>
-                    <tbody>
-                        <tr><td>0 – 20</td><td>No rest required</td></tr>
-                        <tr><td>21 – 35</td><td>1 calendar day</td></tr>
-                        <tr><td>36 – 50</td><td>2 calendar days</td></tr>
-                        <tr><td>51 – 65</td><td>3 calendar days</td></tr>
-                        <tr><td>66 – 75</td><td>4 calendar days</td></tr>
-                    </tbody>
-                </table>
+                ${PITCH_TABLE_HTML}
                 <ul class="rules-list" style="margin-top:0.75rem">
-                    <li><span class="rule-num">&bull;</span><span>Max pitches by age: <strong>8 yrs = 50</strong> &middot; <strong>9 yrs = 75</strong> &middot; <strong>10 yrs = 75</strong>. Exceeding 76+ results in manager ejection.</span></li>
+                    <li><span class="rule-num">&bull;</span><span>Max pitches by age: <strong>9 yrs = 75</strong> &middot; <strong>10 yrs = 75</strong>. Exceeding limit results in manager ejection.</span></li>
                     <li><span class="rule-num">&bull;</span><span>Managers, coaches, and scorekeepers should alert the opposing manager as pitch limits approach. Final responsibility rests with the pitcher's manager.</span></li>
                     <li><span class="rule-num">&bull;</span><span>A pitcher who delivers <strong>41 or more pitches</strong> in a game cannot play catcher for the remainder of that day.</span></li>
                     <li><span class="rule-num">&bull;</span><span>Pitchers may finish facing the current batter without adding pitches to their rest-day count.</span></li>
                 </ul>
             </div>
-
             <div class="rules-section">
                 <h3>Pitching Mechanics</h3>
                 <ul class="rules-list">
-                    <li><span class="rule-num">18</span><span>Pitcher may <strong>not</strong> bring pitching hand to lips or mouth while in contact with the pitching rubber. They may do so while off the rubber if they wipe off the hand before contacting the ball.</span></li>
-                    <li><span class="rule-num">19</span><span>Catchers who play <strong>3 or fewer innings</strong> cannot throw 21+ pitches the same day (exception: may complete the batter being faced).</span></li>
+                    <li><span class="rule-num">18</span><span>Pitcher may <strong>not</strong> bring pitching hand to lips or mouth while in contact with the pitching rubber.</span></li>
+                    <li><span class="rule-num">19</span><span>Catchers who play <strong>3 or fewer innings</strong> cannot throw 21+ pitches the same day.</span></li>
                     <li><span class="rule-num">20</span><span>If a pitcher reaches 40 pitches while facing a batter, they may complete that batter while maintaining catcher eligibility for the rest of the day.</span></li>
                     <li><span class="rule-num">21</span><span>A manager's timeout for a pitching change does not count as a mound visit if substitution occurs before discussing plays with defenders.</span></li>
                 </ul>
+            </div>`,
+
+        majors: `
+            <h2>Majors (Age 11–12) &mdash; League Rules</h2>
+            <p class="rules-source">Source: <a href="https://www.bnll.org" target="_blank">bnll.org</a></p>
+            <div class="rules-section">
+                <h3>General Playing Rules</h3>
+                <ul class="rules-list">
+                    <li><span class="rule-num">1</span><span>All managers will bat the entire lineup. Injured players are skipped without being recorded as an out.</span></li>
+                    <li><span class="rule-num">2</span><span>Kid-pitch division. Stealing is allowed on any live pitch — runners may advance at their own risk.</span></li>
+                    <li><span class="rule-num">3</span><span>Teams are limited to <strong>5 runs per inning</strong>, except the final inning (unlimited, 10 at-bats).</span></li>
+                    <li><span class="rule-num">4</span><span>No new inning shall start after <strong>1:50</strong> of play.</span></li>
+                    <li><span class="rule-num">5</span><span>Coaches must rotate players through infield and outfield positions.</span></li>
+                    <li><span class="rule-num">6</span><span>Only <strong>3 coaches</strong> allowed in the dugout at any time.</span></li>
+                    <li><span class="rule-num">7</span><span>Ejection policy: cannot attend next game; must meet with League President before returning. Second ejection = season suspension.</span></li>
+                </ul>
             </div>
-        </div>`;
+            <div class="rules-section">
+                <h3>Pitch Count &amp; Rest Requirements</h3>
+                ${PITCH_TABLE_HTML}
+                <ul class="rules-list" style="margin-top:0.75rem">
+                    <li><span class="rule-num">&bull;</span><span>Max pitches: <strong>11 yrs = 85</strong> &middot; <strong>12 yrs = 85</strong> per day.</span></li>
+                    <li><span class="rule-num">&bull;</span><span>A pitcher who delivers <strong>41 or more pitches</strong> in a game cannot play catcher for the remainder of that day.</span></li>
+                </ul>
+            </div>`,
+
+        juniors: `
+            <h2>Juniors (Age 13–14) &mdash; League Rules</h2>
+            <p class="rules-source">Source: <a href="https://www.bnll.org" target="_blank">bnll.org</a></p>
+            <div class="rules-section">
+                <h3>General Playing Rules</h3>
+                <ul class="rules-list">
+                    <li><span class="rule-num">1</span><span>Standard Little League Junior Division rules apply (90-foot bases, 60'6" pitching distance).</span></li>
+                    <li><span class="rule-num">2</span><span>Full leading and stealing allowed on any live pitch.</span></li>
+                    <li><span class="rule-num">3</span><span>Bat the entire lineup; injured players skipped without being recorded as an out.</span></li>
+                    <li><span class="rule-num">4</span><span>Teams are limited to <strong>5 runs per inning</strong>, except the final inning (unlimited, 10 at-bats).</span></li>
+                    <li><span class="rule-num">5</span><span>No new inning shall start after <strong>2:00</strong> of play.</span></li>
+                    <li><span class="rule-num">6</span><span>Only <strong>3 coaches</strong> allowed in the dugout at any time.</span></li>
+                    <li><span class="rule-num">7</span><span>Ejection policy: cannot attend next game; must meet with League President before returning. Second ejection = season suspension.</span></li>
+                </ul>
+            </div>
+            <div class="rules-section">
+                <h3>Pitch Count &amp; Rest Requirements</h3>
+                ${PITCH_TABLE_HTML}
+                <ul class="rules-list" style="margin-top:0.75rem">
+                    <li><span class="rule-num">&bull;</span><span>Max pitches: <strong>13–14 yrs = 95</strong> per day.</span></li>
+                    <li><span class="rule-num">&bull;</span><span>A pitcher who delivers <strong>41 or more pitches</strong> in a game cannot play catcher for the remainder of that day.</span></li>
+                </ul>
+            </div>`,
+
+        aa: `
+            <h2>AA (Age 8–9) &mdash; League Rules</h2>
+            <p class="rules-source">Source: <a href="https://www.bnll.org" target="_blank">bnll.org</a></p>
+            <div class="rules-section">
+                <h3>General Playing Rules</h3>
+                <ul class="rules-list">
+                    <li><span class="rule-num">1</span><span>Machine-pitch division. A pitching machine is used for all at-bats.</span></li>
+                    <li><span class="rule-num">2</span><span>Bat the entire lineup. Injured players are skipped without being recorded as an out.</span></li>
+                    <li><span class="rule-num">3</span><span>Teams are limited to <strong>4 runs per inning</strong>, except the final inning (unlimited, 10 at-bats).</span></li>
+                    <li><span class="rule-num">4</span><span>No stealing; runners advance only on batted balls.</span></li>
+                    <li><span class="rule-num">5</span><span>No new inning shall start after <strong>1:45</strong> of play.</span></li>
+                    <li><span class="rule-num">6</span><span>Coaches must rotate players through infield and outfield positions.</span></li>
+                    <li><span class="rule-num">7</span><span>Each batter receives a set number of pitches from the machine; specific count determined by league each season.</span></li>
+                    <li><span class="rule-num">8</span><span>Only <strong>3 coaches</strong> allowed in the dugout at any time.</span></li>
+                    <li><span class="rule-num">9</span><span>Ejection policy: cannot attend next game; must meet with League President before returning.</span></li>
+                </ul>
+            </div>`,
+
+        aball: `
+            <h2>A Ball (Age 7–8) &mdash; League Rules</h2>
+            <p class="rules-source">Source: <a href="https://www.bnll.org" target="_blank">bnll.org</a></p>
+            <div class="rules-section">
+                <h3>General Playing Rules</h3>
+                <ul class="rules-list">
+                    <li><span class="rule-num">1</span><span>Coach-pitch division. A coach from the batting team pitches to their own players.</span></li>
+                    <li><span class="rule-num">2</span><span>Bat the entire lineup. Injured players are skipped without being recorded as an out.</span></li>
+                    <li><span class="rule-num">3</span><span>Teams are limited to <strong>4 runs per inning</strong>, except the final inning (unlimited, 10 at-bats).</span></li>
+                    <li><span class="rule-num">4</span><span>No stealing; runners advance only on batted balls in play.</span></li>
+                    <li><span class="rule-num">5</span><span>No new inning shall start after <strong>1:30</strong> of play.</span></li>
+                    <li><span class="rule-num">6</span><span>Each batter receives up to <strong>6 pitches</strong> from the coach; if the batter does not put the ball in play, the at-bat ends.</span></li>
+                    <li><span class="rule-num">7</span><span>Coaches must rotate players through infield and outfield positions.</span></li>
+                    <li><span class="rule-num">8</span><span>Focus is on player development and fun. Scorekeeping is informal.</span></li>
+                </ul>
+            </div>`,
+
+        rookie: `
+            <h2>Rookie (Age 6–7) &mdash; League Rules</h2>
+            <p class="rules-source">Source: <a href="https://www.bnll.org" target="_blank">bnll.org</a></p>
+            <div class="rules-section">
+                <h3>General Playing Rules</h3>
+                <ul class="rules-list">
+                    <li><span class="rule-num">1</span><span>Introductory division combining tee ball and coach pitch. Players may hit off a tee or from a coach's pitch.</span></li>
+                    <li><span class="rule-num">2</span><span>All players bat each inning; no outs recorded — focus is entirely on participation and fun.</span></li>
+                    <li><span class="rule-num">3</span><span>No stealing or advancing on overthrows.</span></li>
+                    <li><span class="rule-num">4</span><span>Games are typically <strong>3–4 innings</strong> or time-limited to <strong>1:00</strong> of play.</span></li>
+                    <li><span class="rule-num">5</span><span>All players rotate through all positions during the season.</span></li>
+                    <li><span class="rule-num">6</span><span>Emphasis on teaching basic rules, throwing, catching, and hitting fundamentals.</span></li>
+                </ul>
+            </div>`,
+
+        peewee: `
+            <h2>Pee Wee (Age 5–6) &mdash; League Rules</h2>
+            <p class="rules-source">Source: <a href="https://www.bnll.org" target="_blank">bnll.org</a></p>
+            <div class="rules-section">
+                <h3>General Playing Rules</h3>
+                <ul class="rules-list">
+                    <li><span class="rule-num">1</span><span>Tee ball division. All batters hit off a batting tee.</span></li>
+                    <li><span class="rule-num">2</span><span>All players bat each inning; no outs recorded — emphasis is on fun and motor skill development.</span></li>
+                    <li><span class="rule-num">3</span><span>No base stealing or advancing on overthrows.</span></li>
+                    <li><span class="rule-num">4</span><span>Games are typically <strong>3 innings</strong> or time-limited.</span></li>
+                    <li><span class="rule-num">5</span><span>All players rotate through positions each inning.</span></li>
+                    <li><span class="rule-num">6</span><span>Coaches on the field at all times to assist and encourage players.</span></li>
+                </ul>
+            </div>`,
+
+        tball: `
+            <h2>T-Ball (Age 4–5) &mdash; League Rules</h2>
+            <p class="rules-source">Source: <a href="https://www.bnll.org" target="_blank">bnll.org</a></p>
+            <div class="rules-section">
+                <h3>General Playing Rules</h3>
+                <ul class="rules-list">
+                    <li><span class="rule-num">1</span><span>Pure tee ball — all batters hit off a stationary tee. No pitching of any kind.</span></li>
+                    <li><span class="rule-num">2</span><span>Every player bats each inning. No outs or score kept — participation and enjoyment are the only goals.</span></li>
+                    <li><span class="rule-num">3</span><span>Coaches are on the field at all times to guide players and model good sportsmanship.</span></li>
+                    <li><span class="rule-num">4</span><span>All players rotate through all positions every inning.</span></li>
+                    <li><span class="rule-num">5</span><span>Games are short (2–3 innings) and focused entirely on the experience of playing baseball.</span></li>
+                </ul>
+            </div>`,
+    };
+
+    function selectDivision(id) {
+        document.querySelectorAll('.rules-div-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.div === id);
+        });
+        const content = document.getElementById('rules-div-content');
+        if (content) content.innerHTML = DIVISION_RULES[id] || '<p>Rules coming soon.</p>';
+    }
+
+    function renderRules() {
+        const buttonsHtml = DIVISIONS.map(d =>
+            `<button class="rules-div-btn${d.id === 'aaa' ? ' active' : ''}" data-div="${d.id}" onclick="selectDivision('${d.id}')">${d.label} <span style="opacity:0.6;font-weight:400;font-size:11px">${d.age}</span></button>`
+        ).join('');
+        document.getElementById('gamesContainer').innerHTML = `
+        <div class="rules-div-selector">${buttonsHtml}</div>
+        <div class="rules-content" id="rules-div-content"></div>`;
+        selectDivision('aaa');
     }
 
     // ── Data parsing ──────────────────────────────────────────────────────────
