@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BNLL 2026 Schedule</title>
+    <title>BNLL 2026 · AAA Schedule</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%);
+            background: #f0f2f5;
             padding: 1rem;
             min-height: 100vh;
         }
@@ -19,61 +19,75 @@
         /* ── Header ── */
         .header {
             background: white;
-            padding: 2rem 1.5rem;
+            padding: 1.25rem 1.5rem;
             border-radius: 12px;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
             display: flex;
             align-items: center;
-            gap: 2rem;
-            flex-wrap: wrap;
+            gap: 1.25rem;
         }
-        .header-logo { width: 100px; height: 100px; object-fit: contain; flex-shrink: 0; }
-        .header-content h1 { font-size: 28px; margin-bottom: 0.5rem; color: #1a1a1a; }
-        .header-content p { color: #666; font-size: 15px; margin-bottom: 0.5rem; }
-        .header-content a { color: #2c5aa0; text-decoration: none; font-size: 14px; font-weight: 500; }
-        .header-content a:hover { text-decoration: underline; }
-        .last-updated { font-size: 12px; color: #999; margin-top: 0.5rem; }
+        .header-logo { width: 72px; height: 72px; object-fit: contain; flex-shrink: 0; }
+        .header-text h1 { font-size: 22px; font-weight: 800; color: #1a1a1a; letter-spacing: -0.3px; }
+        .header-text p { color: #777; font-size: 13px; margin-top: 2px; }
+        .header-text a { color: #2c5aa0; text-decoration: none; font-size: 12px; font-weight: 500; }
+        .header-text a:hover { text-decoration: underline; }
+        .header-meta { margin-left: auto; text-align: right; flex-shrink: 0; }
+        .last-updated { font-size: 11px; color: #aaa; }
 
         /* ── Controls ── */
         .controls {
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            overflow: hidden;
+        }
+        .controls-tabs {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            padding: 0.625rem 0.75rem;
+            gap: 0.375rem;
             flex-wrap: wrap;
-            align-items: center;
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .tab-buttons { display: flex; gap: 0.5rem; flex-shrink: 0; }
         .tab-btn {
-            padding: 0.6rem 1.2rem;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .tab-btn.active { background: #2c5aa0; color: white; border-color: #2c5aa0; }
-        .tab-btn:hover:not(.active) { border-color: #999; background: #f9f9f9; }
-
-        .week-selector { display: flex; gap: 0.5rem; flex-wrap: wrap; flex: 1; min-width: 300px; }
-        .week-btn {
-            padding: 0.6rem 1rem;
-            border: 1px solid #ddd;
-            background: white;
+            padding: 0.5rem 1.1rem;
+            border: none;
+            background: transparent;
             border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.2s;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.15s;
             white-space: nowrap;
         }
-        .week-btn.active { background: #28a745; color: white; border-color: #28a745; }
-        .week-btn:hover:not(.active) { border-color: #999; }
+        .tab-btn:hover { background: #f5f5f5; color: #333; }
+        .tab-btn.active { background: #2c5aa0; color: white; }
+
+        .week-selector {
+            display: none;
+            padding: 0.5rem 0.75rem;
+            gap: 0.375rem;
+            flex-wrap: wrap;
+            align-items: center;
+            border-top: 1px solid #f0f0f0;
+        }
+        .week-selector.visible { display: flex; }
+        .week-label { font-size: 11px; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 0.25rem; flex-shrink: 0; }
+        .week-btn {
+            padding: 0.375rem 0.85rem;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            color: #555;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .week-btn.active { background: #1e7e34; color: white; border-color: #1e7e34; font-weight: 700; }
+        .week-btn:hover:not(.active) { border-color: #999; color: #222; background: #f9f9f9; }
 
         /* ── Game Calendar ── */
         .calendar-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -87,140 +101,238 @@
             background: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
             min-height: 110px;
         }
         .cal-day-header {
             text-align: center;
-            padding: 0.5rem 0.25rem;
-            background: #f9f9f9;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 0.45rem 0.25rem;
+            background: #f7f8fa;
+            border-bottom: 1px solid #eee;
         }
         .calendar-day.today .cal-day-header { background: #2c5aa0; }
-        .cal-day-name { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #aaa; letter-spacing: 0.5px; }
-        .calendar-day.today .cal-day-name { color: rgba(255,255,255,0.75); }
-        .cal-day-num { font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1.2; }
+        .cal-day-name { font-size: 9px; font-weight: 800; text-transform: uppercase; color: #bbb; letter-spacing: 0.6px; }
+        .calendar-day.today .cal-day-name { color: rgba(255,255,255,0.7); }
+        .cal-day-num { font-size: 19px; font-weight: 800; color: #1a1a1a; line-height: 1.2; }
         .calendar-day.today .cal-day-num { color: white; }
-        .calendar-day.past-day { opacity: 0.5; }
+        .calendar-day.past-day { opacity: 0.45; }
         .cal-events { padding: 0.4rem; }
-        .cal-empty { text-align: center; color: #e0e0e0; font-size: 22px; padding: 1.25rem 0; }
+        .cal-empty { text-align: center; color: #e8e8e8; font-size: 18px; padding: 1.2rem 0; }
 
         .cal-game {
             background: #eef2fa;
             border-left: 3px solid #2c5aa0;
             border-radius: 4px;
             padding: 0.35rem 0.4rem;
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.3rem;
         }
-        .cal-time { font-weight: 700; color: #2c5aa0; font-size: 11px; margin-bottom: 0.2rem; }
-        .cal-team-row { display: flex; align-items: center; gap: 0.2rem; font-size: 10px; font-weight: 600; color: #1a1a1a; }
-        .cal-logo { width: 14px; height: 14px; object-fit: contain; flex-shrink: 0; }
-        .cal-vs { color: #ccc; font-size: 9px; font-weight: 700; text-align: center; padding: 0.1rem 0; }
-        .cal-field { color: #888; font-size: 9px; margin-top: 0.25rem; font-style: italic; }
+        .cal-time { font-weight: 700; color: #2c5aa0; font-size: 10px; margin-bottom: 0.2rem; }
+        .cal-team-row { display: flex; align-items: center; gap: 0.2rem; font-size: 10px; font-weight: 700; color: #1a1a1a; }
+        .cal-logo { width: 13px; height: 13px; object-fit: contain; flex-shrink: 0; }
+        .cal-vs { color: #ccc; font-size: 8px; font-weight: 700; text-align: center; line-height: 1.4; }
+        .cal-venue { color: #999; font-size: 9px; margin-top: 0.2rem; }
+        .cal-ump   { color: #aaa; font-size: 9px; margin-top: 0.1rem; }
 
-        /* ── Practice Field Schedule ── */
-        .practice-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        /* ── Practice Schedule ── */
+        .practice-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+        }
+        .practice-section-header {
+            background: #2c5aa0;
+            color: white;
+            padding: 0.55rem 1rem;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .practice-table-wrapper { overflow-x: auto; }
         .practice-table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-            min-width: 700px;
-            font-size: 13px;
+            font-size: 12px;
+            min-width: 550px;
         }
-        .practice-table thead tr { background: #2c5aa0; color: white; }
         .practice-table th {
-            padding: 0.65rem 0.75rem;
+            padding: 0.45rem 0.75rem;
+            text-align: left;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #999;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap;
+        }
+        .practice-table td {
+            padding: 0.45rem 0.75rem;
+            border-bottom: 1px solid #f5f5f5;
+            vertical-align: top;
+            color: #444;
+            min-width: 100px;
+        }
+        .practice-table tr:last-child td { border-bottom: none; }
+        .practice-table tr:hover td { background: #fafafa; }
+        .practice-time-col { font-weight: 700; color: #555; white-space: nowrap; font-size: 11px; min-width: 120px; }
+        .practice-cell { color: #333; line-height: 1.4; }
+
+        /* ── Rules ── */
+        .rules-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+            padding: 1.5rem;
+            max-width: 800px;
+        }
+        .rules-content h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.25rem;
+        }
+        .rules-source {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 1.5rem;
+        }
+        .rules-source a { color: #2c5aa0; }
+        .rules-section {
+            margin-bottom: 1.5rem;
+        }
+        .rules-section h3 {
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #2c5aa0;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid #eef2fa;
+        }
+        .rules-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .rules-list li {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 13px;
+            color: #333;
+            line-height: 1.55;
+        }
+        .rule-num {
+            font-weight: 800;
+            color: #2c5aa0;
+            min-width: 1.5rem;
+            flex-shrink: 0;
+        }
+        .pitch-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 0.5rem;
+        }
+        .pitch-table th {
+            background: #f0f4fb;
+            padding: 0.4rem 0.75rem;
             text-align: left;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
+            color: #2c5aa0;
+            border-bottom: 1px solid #dde6f5;
         }
-        .practice-table th:first-child { min-width: 160px; }
-        .practice-table td {
-            padding: 0.55rem 0.75rem;
+        .pitch-table td {
+            padding: 0.35rem 0.75rem;
             border-bottom: 1px solid #f0f0f0;
-            vertical-align: top;
-            color: #333;
-            min-width: 120px;
+            color: #444;
         }
-        .practice-table tr:last-child td { border-bottom: none; }
-        .practice-table tr:hover td { background: #f9f9f9; }
-        .practice-field-name { font-weight: 700; color: #1a1a1a; white-space: nowrap; }
-        .practice-cell { white-space: pre-line; color: #555; font-size: 12px; line-height: 1.5; }
+        .pitch-table tr:last-child td { border-bottom: none; }
 
         /* ── Standings ── */
         .standings-table {
             width: 100%;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
             overflow: hidden;
             border-collapse: collapse;
         }
         .standings-table th {
-            font-size: 11px; color: #999; text-transform: uppercase; font-weight: 700;
-            letter-spacing: 0.4px; padding: 0.6rem 0.75rem; text-align: right;
+            font-size: 10px; color: #aaa; text-transform: uppercase; font-weight: 700;
+            letter-spacing: 0.4px; padding: 0.55rem 0.75rem; text-align: right;
             background: #fafafa; border-bottom: 1px solid #eee;
         }
         .standings-table th:first-child { text-align: left; }
         .standings-table td {
-            padding: 0.55rem 0.75rem; font-size: 13px; color: #333;
+            padding: 0.5rem 0.75rem; font-size: 13px; color: #333;
             text-align: right; border-bottom: 1px solid #f0f0f0;
         }
         .standings-table tr:last-child td { border-bottom: none; }
         .standings-table td:first-child { text-align: left; }
         .standings-team { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #1a1a1a; }
-        .standings-team img { width: 22px; height: 22px; object-fit: contain; }
+        .standings-team img { width: 20px; height: 20px; object-fit: contain; }
         .strk-w { color: #28a745; font-weight: 700; }
         .strk-l { color: #dc3545; font-weight: 700; }
-        .standings-table tr:hover td { background: #f9f9f9; }
+        .standings-table tr:hover td { background: #fafafa; }
 
         /* ── Misc ── */
-        .no-games { background: white; padding: 2.5rem; border-radius: 10px; text-align: center; color: #999; font-size: 15px; }
-        .loading { text-align: center; padding: 2.5rem; color: #999; font-size: 15px; }
-        .error { background: #ffebee; border-left: 4px solid #f44336; color: #c62828; padding: 1rem 1.25rem; border-radius: 6px; margin-bottom: 1rem; font-size: 14px; }
-        .refresh-indicator { font-size: 12px; color: #999; text-align: center; margin-top: 2rem; padding: 1rem; }
+        #gamesContainer { min-height: 200px; }
+        .no-data { background: white; padding: 2.5rem; border-radius: 10px; text-align: center; color: #bbb; font-size: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+        .loading { text-align: center; padding: 3rem; color: #bbb; font-size: 14px; }
+        .error { background: #fff0f0; border-left: 4px solid #f44336; color: #c62828; padding: 1rem 1.25rem; border-radius: 8px; margin-bottom: 1rem; font-size: 13px; }
+        .refresh-footer { font-size: 11px; color: #bbb; text-align: center; margin-top: 1.5rem; padding: 0.75rem; }
 
-        @media (max-width: 600px) {
-            .header { flex-direction: column; text-align: center; gap: 1rem; }
-            .header-logo { width: 80px; height: 80px; }
-            .controls { flex-direction: column; }
-            .week-selector { width: 100%; }
+        @media (max-width: 640px) {
+            .header { gap: 1rem; }
+            .header-logo { width: 56px; height: 56px; }
+            .header-text h1 { font-size: 18px; }
+            .header-meta { display: none; }
         }
     </style>
 </head>
 <body>
 <div class="container">
+
+    <!-- Header -->
     <div class="header">
-        <img src="bnll.png" alt="BNLL Logo" class="header-logo">
-        <div class="header-content">
-            <h1>BNLL 2026 Schedule</h1>
-            <p>Bend North Little League · AAA Division</p>
-            <p><a href="https://bnll.org" target="_blank">Visit bnll.org →</a></p>
+        <img src="bnll.jpeg" alt="BNLL Logo" class="header-logo">
+        <div class="header-text">
+            <h1>BNLL 2026 &mdash; AAA Division</h1>
+            <p>Bend North Little League</p>
+            <a href="https://bnll.org" target="_blank">bnll.org &rarr;</a>
+        </div>
+        <div class="header-meta">
             <div class="last-updated" id="lastUpdated"></div>
         </div>
     </div>
 
+    <!-- Controls -->
     <div class="controls">
-        <div class="tab-buttons">
+        <div class="controls-tabs">
             <button class="tab-btn active" onclick="switchTab('games')">Games</button>
             <button class="tab-btn" onclick="switchTab('practices')">Practice Fields</button>
             <button class="tab-btn" onclick="switchTab('standings')">Standings</button>
+            <button class="tab-btn" onclick="switchTab('rules')">Rules</button>
         </div>
-        <div class="week-selector" id="weekSelector"></div>
+        <div class="week-selector" id="weekSelector">
+            <span class="week-label">Week</span>
+        </div>
     </div>
 
+    <!-- Content -->
     <div id="gamesContainer">
-        <div class="loading">Loading schedule…</div>
+        <div class="loading">Loading schedule&hellip;</div>
     </div>
 
-    <div class="refresh-indicator">
-        <p>📡 Auto-refreshing every 4 hours · Last refresh: <span id="refreshTime">Just now</span></p>
+    <div class="refresh-footer">
+        &bull; Auto-refreshing every 4 hours &bull; Last refresh: <span id="refreshTime">Just now</span>
     </div>
 </div>
 
@@ -248,6 +360,7 @@
     let selectedWeek = null;
     let currentTab   = 'games';
 
+    // ── CSV ───────────────────────────────────────────────────────────────────
     function parseCSVLine(line) {
         const result = [];
         let cur = '', inQ = false;
@@ -261,198 +374,298 @@
         return result;
     }
 
-    function getTeamLogo(name) { return teamLogoMap[name] || createDefaultLogo(name); }
-    function createDefaultLogo(name) {
-        const i = (name || '??').substring(0, 2).toUpperCase();
+    // ── Logos ─────────────────────────────────────────────────────────────────
+    function getTeamLogo(n) { return teamLogoMap[n] || mkLogo(n); }
+    function mkLogo(n) {
+        const i = (n || '??').substring(0, 2).toUpperCase();
         return `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23999" width="100" height="100"/%3E%3Ctext x="50" y="60" font-size="32" font-weight="bold" fill="%23FFF" text-anchor="middle"%3E${i}%3C/text%3E%3C/svg%3E`;
     }
 
+    // ── Dates ─────────────────────────────────────────────────────────────────
     function pad(n) { return String(n).padStart(2, '0'); }
-    function fmtDate(d) { return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+    function fmtISO(d) { return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
 
-    function getWeekKey(dateStr) {
-        if (typeof dateStr !== 'string') return null;
-        const p = dateStr.split('/');
+    // Normalize M/D/YYYY or MM/DD/YYYY to zero-padded MM/DD/YYYY
+    function normalizeDate(ds) {
+        if (typeof ds !== 'string') return ds;
+        const p = ds.trim().split('/');
+        if (p.length !== 3) return ds;
+        return `${pad(+p[0])}/${pad(+p[1])}/${p[2]}`;
+    }
+
+    function getWeekKey(ds) {
+        if (typeof ds !== 'string') return null;
+        const p = ds.split('/');
         if (p.length !== 3) return null;
-        const d = new Date(+p[2], +p[0] - 1, +p[1]);
+        const d = new Date(+p[2], +p[0]-1, +p[1]);
         if (isNaN(d)) return null;
         d.setDate(d.getDate() - d.getDay());
-        return fmtDate(d);
+        return fmtISO(d);
     }
-
-    function getCurrentWeekKey() {
+    function curWeekKey() {
         const d = new Date();
         d.setDate(d.getDate() - d.getDay());
-        return fmtDate(d);
+        return fmtISO(d);
     }
-
-    function getWeekLabel(key) {
-        const [y, m, d] = key.split('-').map(Number);
-        const sun = new Date(y, m-1, d);
-        const sat = new Date(y, m-1, d+6);
-        const mo  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    function weekLabel(key) {
+        const [y,m,d] = key.split('-').map(Number);
+        const sun = new Date(y,m-1,d), sat = new Date(y,m-1,d+6);
+        const mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         return `${mo[sun.getMonth()]} ${sun.getDate()} \u2013 ${mo[sat.getMonth()]} ${sat.getDate()}`;
     }
+    function calKey(d) { return `${pad(d.getMonth()+1)}/${pad(d.getDate())}/${d.getFullYear()}`; }
 
-    function calDateKey(d) { return `${pad(d.getMonth()+1)}/${pad(d.getDate())}/${d.getFullYear()}`; }
-
+    // ── Tab control ───────────────────────────────────────────────────────────
     function switchTab(tab) {
         currentTab = tab;
-        document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-            btn.classList.toggle('active',
-                (i === 0 && tab === 'games') ||
-                (i === 1 && tab === 'practices') ||
-                (i === 2 && tab === 'standings')
-            );
+        document.querySelectorAll('.tab-btn').forEach((b,i) => {
+            b.classList.toggle('active', ['games','practices','standings','rules'][i] === tab);
         });
-        selectedWeek = null;
         const ws = document.getElementById('weekSelector');
-        ws.style.display = tab === 'games' ? '' : 'none';
-        if (tab === 'games') renderWeekSelector();
+        if (tab === 'games') {
+            ws.classList.add('visible');
+            renderWeekSelector();
+        } else {
+            ws.classList.remove('visible');
+        }
+        selectedWeek = null;
         renderContent();
     }
 
     function selectWeek(key) {
         selectedWeek = key;
-        document.querySelectorAll('.week-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.week === key);
-        });
+        document.querySelectorAll('.week-btn').forEach(b => b.classList.toggle('active', b.dataset.week === key));
         renderContent();
     }
 
     function renderWeekSelector() {
+        const ws = document.getElementById('weekSelector');
         const weekSet = new Set(allGames.map(g => getWeekKey(g.date)).filter(Boolean));
         const weeks   = [...weekSet].sort();
-        if (!weeks.length) { document.getElementById('weekSelector').innerHTML = ''; return; }
+        ws.querySelectorAll('.week-btn').forEach(b => b.remove());
+        if (!weeks.length) return;
         if (!selectedWeek || !weeks.includes(selectedWeek)) {
-            const cur    = getCurrentWeekKey();
+            const cur    = curWeekKey();
             const future = weeks.filter(w => w >= cur);
-            selectedWeek = future.length ? future[0] : weeks[weeks.length - 1];
+            selectedWeek = future.length ? future[0] : weeks[weeks.length-1];
         }
-        document.getElementById('weekSelector').innerHTML = weeks.map(w =>
-            `<button class="week-btn${w === selectedWeek ? ' active' : ''}" data-week="${w}" onclick="selectWeek('${w}')">${getWeekLabel(w)}</button>`
-        ).join('');
+        weeks.forEach(w => {
+            const btn = document.createElement('button');
+            btn.className = 'week-btn' + (w === selectedWeek ? ' active' : '');
+            btn.dataset.week = w;
+            btn.textContent = weekLabel(w);
+            btn.onclick = () => selectWeek(w);
+            ws.appendChild(btn);
+        });
     }
 
+    // ── Render dispatch ───────────────────────────────────────────────────────
     function renderContent() {
         if      (currentTab === 'games')     renderGames();
         else if (currentTab === 'practices') renderPractices();
-        else                                 renderStandings();
+        else if (currentTab === 'standings') renderStandings();
+        else                                 renderRules();
     }
 
+    // ── Games calendar ────────────────────────────────────────────────────────
     function renderGames() {
         if (!selectedWeek) { renderWeekSelector(); if (!selectedWeek) return; }
-        const weekGames = allGames.filter(g => getWeekKey(g.date) === selectedWeek);
         const container = document.getElementById('gamesContainer');
-        const [y, m, d] = selectedWeek.split('-').map(Number);
+        const [y,m,d]   = selectedWeek.split('-').map(Number);
         const today     = new Date(); today.setHours(0,0,0,0);
-        const dayNames  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        const days      = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
         const byDay = {};
-        weekGames.forEach(g => { if (!byDay[g.date]) byDay[g.date] = []; byDay[g.date].push(g); });
-        const cells = Array.from({length: 7}, (_, i) => {
-            const day      = new Date(y, m-1, d+i);
-            const dateKey  = calDateKey(day);
-            const isToday  = day.toDateString() === today.toDateString();
-            const isPast   = day < today && !isToday;
-            const dayGames = byDay[dateKey] || [];
-            const eventsHtml = dayGames.length
-                ? dayGames.map(renderGameCell).join('')
-                : '<div class="cal-empty">\u2014</div>';
-            return `
-                <div class="calendar-day${isToday?' today':''}${isPast?' past-day':''}">
-                    <div class="cal-day-header">
-                        <div class="cal-day-name">${dayNames[i]}</div>
-                        <div class="cal-day-num">${day.getDate()}</div>
-                    </div>
-                    <div class="cal-events">${eventsHtml}</div>
-                </div>`;
-        }).join('');
-        container.innerHTML = `<div class="calendar-wrapper"><div class="calendar-grid">${cells}</div></div>`;
-    }
+        allGames.filter(g => getWeekKey(g.date) === selectedWeek)
+                .forEach(g => { (byDay[g.date] = byDay[g.date]||[]).push(g); });
 
-    function renderGameCell(game) {
-        const hl = getTeamLogo(game.homeTeam), dh = createDefaultLogo(game.homeTeam);
-        const al = getTeamLogo(game.awayTeam), da = createDefaultLogo(game.awayTeam);
-        const venue = [game.location, game.field].filter(Boolean).join(' \u2013 ');
-        return `
-            <div class="cal-game">
-                <div class="cal-time">${game.startTime || '\u2014'}</div>
-                <div class="cal-team-row">
-                    <img src="${hl}" class="cal-logo" onerror="this.onerror=null;this.src='${dh}'">
-                    <span>${game.homeTeam}</span>
+        const cols = Array.from({length:7}, (_,i) => {
+            const day     = new Date(y,m-1,d+i);
+            const dk      = calKey(day);
+            const isToday = day.toDateString() === today.toDateString();
+            const isPast  = day < today && !isToday;
+            const gs      = byDay[dk] || [];
+            const inner   = gs.length ? gs.map(gameCell).join('') : '<div class="cal-empty">\u2014</div>';
+            return `<div class="calendar-day${isToday?' today':''}${isPast?' past-day':''}">
+                <div class="cal-day-header">
+                    <div class="cal-day-name">${days[i]}</div>
+                    <div class="cal-day-num">${day.getDate()}</div>
                 </div>
-                <div class="cal-vs">vs</div>
-                <div class="cal-team-row">
-                    <img src="${al}" class="cal-logo" onerror="this.onerror=null;this.src='${da}'">
-                    <span>${game.awayTeam}</span>
-                </div>
-                ${venue ? `<div class="cal-field">${venue}</div>` : ''}
+                <div class="cal-events">${inner}</div>
             </div>`;
+        }).join('');
+
+        container.innerHTML = `<div class="calendar-wrapper"><div class="calendar-grid">${cols}</div></div>`;
     }
 
+    function gameCell(g) {
+        const hl=getTeamLogo(g.homeTeam), dh=mkLogo(g.homeTeam);
+        const al=getTeamLogo(g.awayTeam), da=mkLogo(g.awayTeam);
+        const venue = [g.location, g.field].filter(Boolean).join(' \u2013 ');
+        const plateUmp = g.plateUmp ? `<div class="cal-ump">\u26BE ${g.plateUmp}</div>` : '';
+        const fieldUmp = g.fieldUmp ? `<div class="cal-ump">\uD83D\uDCA8 ${g.fieldUmp}</div>` : '';
+        return `<div class="cal-game">
+            <div class="cal-time">${g.startTime||'\u2014'}</div>
+            <div class="cal-team-row"><img src="${hl}" class="cal-logo" onerror="this.onerror=null;this.src='${dh}'"> <span>${g.homeTeam}</span></div>
+            <div class="cal-vs">vs</div>
+            <div class="cal-team-row"><img src="${al}" class="cal-logo" onerror="this.onerror=null;this.src='${da}'"> <span>${g.awayTeam}</span></div>
+            ${venue?`<div class="cal-venue">\uD83D\uDCCD ${venue}</div>`:''}
+            ${plateUmp}${fieldUmp}
+        </div>`;
+    }
+
+    // ── Practice schedule ─────────────────────────────────────────────────────
     function renderPractices() {
         const container = document.getElementById('gamesContainer');
         if (!allPractices.length) {
-            container.innerHTML = '<div class="no-games">No practice schedule available</div>';
+            container.innerHTML = '<div class="no-data">No practice schedule available.<br><small style="color:#ccc">Check that the Google Sheet is shared publicly.</small></div>';
             return;
         }
-        const days    = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+        const isFlat = allPractices[0]?.slots?.[0]?.flat !== undefined && allPractices[0].slots[0].flat !== '';
+
+        if (isFlat) {
+            const html = allPractices.map(section => {
+                const rows = section.slots.map(slot =>
+                    `<tr><td class="practice-time-col">${slot.time}</td><td class="practice-cell">${slot.flat}</td></tr>`
+                ).join('');
+                return `<div class="practice-section">
+                    <div class="practice-section-header">${section.name}</div>
+                    <div class="practice-table-wrapper">
+                        <table class="practice-table">
+                            <thead><tr><th>Time</th><th>Team / Field / Coach</th></tr></thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                </div>`;
+            }).join('');
+            container.innerHTML = html;
+            return;
+        }
+
+        const days    = ['Mon','Tue','Wed','Thu','Fri','Sat'];
         const dayKeys = ['mon','tue','wed','thu','fri','sat'];
-        const rows = allPractices.map(f => {
-            const cells = dayKeys.map(k => `<td><div class="practice-cell">${f[k] || ''}</div></td>`).join('');
-            return `<tr><td class="practice-field-name">${f.field}</td>${cells}</tr>`;
-        }).join('');
-        container.innerHTML = `
-            <div class="practice-wrapper">
-                <table class="practice-table">
-                    <thead><tr>
-                        <th>Field</th>
-                        ${days.map(d => `<th>${d}</th>`).join('')}
-                    </tr></thead>
-                    <tbody>${rows}</tbody>
-                </table>
+
+        const html = allPractices.map(section => {
+            const rows = section.slots.map(slot => {
+                const cells = dayKeys.map(k => `<td class="practice-cell">${slot[k]||''}</td>`).join('');
+                return `<tr><td class="practice-time-col">${slot.time}</td>${cells}</tr>`;
+            }).join('');
+            return `<div class="practice-section">
+                <div class="practice-section-header">${section.name}</div>
+                <div class="practice-table-wrapper">
+                    <table class="practice-table">
+                        <thead><tr>
+                            <th>Time</th>
+                            ${days.map(d=>`<th>${d}</th>`).join('')}
+                        </tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
             </div>`;
+        }).join('');
+
+        container.innerHTML = html;
     }
 
+    // ── Standings ─────────────────────────────────────────────────────────────
     const standings = [
-        { team:'GUARDIANS',    w:3, l:0, t:0, pct:'1.000', gb:'-',   rs:45, ra:16, diff: 29, strk:'W3', home:'0-0', away:'3-0' },
-        { team:'RANGERS',      w:2, l:1, t:0, pct:'0.667', gb:'1.0', rs:31, ra:28, diff:  3, strk:'W2', home:'0-1', away:'2-0' },
-        { team:'DODGERS',      w:2, l:1, t:0, pct:'0.667', gb:'1.0', rs:27, ra:25, diff:  2, strk:'W1', home:'1-1', away:'1-0' },
-        { team:'BREWERS',      w:2, l:1, t:0, pct:'0.667', gb:'1.0', rs:34, ra:35, diff: -1, strk:'W1', home:'1-1', away:'1-0' },
-        { team:'NATIONALS',    w:1, l:1, t:0, pct:'0.500', gb:'1.5', rs:25, ra:23, diff:  2, strk:'W1', home:'0-0', away:'1-1' },
-        { team:'BRAVES',       w:1, l:1, t:0, pct:'0.500', gb:'1.5', rs:26, ra:26, diff:  0, strk:'L1', home:'1-1', away:'0-0' },
-        { team:'ORIOLES',      w:1, l:2, t:0, pct:'0.333', gb:'2.0', rs:33, ra:34, diff: -1, strk:'L1', home:'1-1', away:'0-1' },
-        { team:'DIAMONDBACKS', w:0, l:1, t:0, pct:'0.000', gb:'2.0', rs: 3, ra: 9, diff: -6, strk:'L1', home:'0-0', away:'0-1' },
-        { team:'GIANTS',       w:1, l:2, t:0, pct:'0.333', gb:'2.0', rs:21, ra:39, diff:-18, strk:'L2', home:'1-2', away:'0-0' },
-        { team:'BLUE JAYS',    w:0, l:3, t:0, pct:'0.000', gb:'3.0', rs:27, ra:36, diff: -9, strk:'L3', home:'0-1', away:'0-2' },
+        {team:'GUARDIANS',    w:3,l:0,t:0,pct:'1.000',gb:'-',  rs:45,ra:16,diff: 29,strk:'W3',home:'0-0',away:'3-0'},
+        {team:'RANGERS',      w:2,l:1,t:0,pct:'0.667',gb:'1.0',rs:31,ra:28,diff:  3,strk:'W2',home:'0-1',away:'2-0'},
+        {team:'DODGERS',      w:2,l:1,t:0,pct:'0.667',gb:'1.0',rs:27,ra:25,diff:  2,strk:'W1',home:'1-1',away:'1-0'},
+        {team:'BREWERS',      w:2,l:1,t:0,pct:'0.667',gb:'1.0',rs:34,ra:35,diff: -1,strk:'W1',home:'1-1',away:'1-0'},
+        {team:'NATIONALS',    w:1,l:1,t:0,pct:'0.500',gb:'1.5',rs:25,ra:23,diff:  2,strk:'W1',home:'0-0',away:'1-1'},
+        {team:'BRAVES',       w:1,l:1,t:0,pct:'0.500',gb:'1.5',rs:26,ra:26,diff:  0,strk:'L1',home:'1-1',away:'0-0'},
+        {team:'ORIOLES',      w:1,l:2,t:0,pct:'0.333',gb:'2.0',rs:33,ra:34,diff: -1,strk:'L1',home:'1-1',away:'0-1'},
+        {team:'DIAMONDBACKS', w:0,l:1,t:0,pct:'0.000',gb:'2.0',rs: 3,ra: 9,diff: -6,strk:'L1',home:'0-0',away:'0-1'},
+        {team:'GIANTS',       w:1,l:2,t:0,pct:'0.333',gb:'2.0',rs:21,ra:39,diff:-18,strk:'L2',home:'1-2',away:'0-0'},
+        {team:'BLUE JAYS',    w:0,l:3,t:0,pct:'0.000',gb:'3.0',rs:27,ra:36,diff: -9,strk:'L3',home:'0-1',away:'0-2'},
     ];
 
     function renderStandings() {
-        const container = document.getElementById('gamesContainer');
-        container.innerHTML = `
-            <table class="standings-table">
-                <thead><tr>
-                    <th>Team</th><th>W</th><th>L</th><th>T</th>
-                    <th>PCT</th><th>GB</th><th>RS</th><th>RA</th><th>DIFF</th>
-                    <th>STRK</th><th>HOME</th><th>AWAY</th>
-                </tr></thead>
-                <tbody>${standings.map(s => `
-                <tr>
-                    <td><div class="standings-team">
-                        <img src="${getTeamLogo(s.team)}" alt="${s.team}" onerror="this.onerror=null;this.src='${createDefaultLogo(s.team)}'">
-                        ${s.team}
-                    </div></td>
-                    <td>${s.w}</td><td>${s.l}</td><td>${s.t}</td>
-                    <td>${s.pct}</td><td>${s.gb}</td>
-                    <td>${s.rs}</td><td>${s.ra}</td>
-                    <td class="${s.diff>0?'strk-w':s.diff<0?'strk-l':''}">${s.diff>0?'+':''}${s.diff}</td>
-                    <td class="${s.strk.startsWith('W')?'strk-w':'strk-l'}">${s.strk}</td>
-                    <td>${s.home}</td><td>${s.away}</td>
-                </tr>`).join('')}
-                </tbody>
-            </table>`;
+        document.getElementById('gamesContainer').innerHTML = `
+        <table class="standings-table">
+            <thead><tr>
+                <th>Team</th><th>W</th><th>L</th><th>T</th>
+                <th>PCT</th><th>GB</th><th>RS</th><th>RA</th><th>DIFF</th>
+                <th>STRK</th><th>HOME</th><th>AWAY</th>
+            </tr></thead>
+            <tbody>${standings.map(s=>`<tr>
+                <td><div class="standings-team">
+                    <img src="${getTeamLogo(s.team)}" onerror="this.onerror=null;this.src='${mkLogo(s.team)}'"> ${s.team}
+                </div></td>
+                <td>${s.w}</td><td>${s.l}</td><td>${s.t}</td>
+                <td>${s.pct}</td><td>${s.gb}</td>
+                <td>${s.rs}</td><td>${s.ra}</td>
+                <td class="${s.diff>0?'strk-w':s.diff<0?'strk-l':''}">${s.diff>0?'+':''}${s.diff}</td>
+                <td class="${s.strk.startsWith('W')?'strk-w':'strk-l'}">${s.strk}</td>
+                <td>${s.home}</td><td>${s.away}</td>
+            </tr>`).join('')}</tbody>
+        </table>`;
     }
 
+    // ── Rules ─────────────────────────────────────────────────────────────────
+    function renderRules() {
+        document.getElementById('gamesContainer').innerHTML = `
+        <div class="rules-content">
+            <h2>AAA Ball (Age 10) &mdash; League Rules</h2>
+            <p class="rules-source">Source: <a href="https://www.bnll.org/Default.aspx?tabid=1258613" target="_blank">bnll.org</a></p>
+
+            <div class="rules-section">
+                <h3>General Playing Rules</h3>
+                <ul class="rules-list">
+                    <li><span class="rule-num">1</span><span>All managers will bat the entire lineup. If a player is injured or must leave, that player is skipped in the batting order and shall not be recorded as an out.</span></li>
+                    <li><span class="rule-num">2</span><span>Emphasis on teaching fundamental baseball skills to all players.</span></li>
+                    <li><span class="rule-num">3</span><span>Coaches must make efforts to rotate all participants through both infield and outfield positions during games, unless injury risk exists.</span></li>
+                    <li><span class="rule-num">4</span><span>There will be no stealing of home plate unless the ball clearly passes the catcher or pitcher.</span></li>
+                    <li><span class="rule-num">5</span><span>Once a pitcher gains control of the ball from the catcher, all base runners must return immediately to their bases.</span></li>
+                    <li><span class="rule-num">6</span><span>No mercy rule applies during the regular season.</span></li>
+                    <li><span class="rule-num">7</span><span>Teams are limited to <strong>5 runs per inning</strong>, except the final inning which allows unlimited scoring with 10 at-bats.</span></li>
+                    <li><span class="rule-num">8</span><span>No new inning shall start after <strong>1:50</strong> of play.</span></li>
+                    <li><span class="rule-num">9</span><span>The umpire determines when the time limit expires.</span></li>
+                    <li><span class="rule-num">10</span><span>One-minute interval between innings before play resumes.</span></li>
+                    <li><span class="rule-num">11</span><span>Pitchers receive maximum <strong>5 warmup pitches</strong> between innings; new pitchers get <strong>8 pitches</strong>.</span></li>
+                    <li><span class="rule-num">12</span><span>Only <strong>3 coaches</strong> allowed in the dugout at any time.</span></li>
+                    <li><span class="rule-num">13</span><span>Managers must follow all Bend North and Little League rules, particularly pitch count and position transition regulations.</span></li>
+                    <li><span class="rule-num">14</span><span>Ejected individuals cannot attend the next team game and must meet with the League President, Vice President, or Commissioner before returning.</span></li>
+                    <li><span class="rule-num">15</span><span>A second ejection results in a season-long suspension.</span></li>
+                    <li><span class="rule-num">16</span><span>All managers must umpire non-assigned games; failure to appear results in suspension from the next game.</span></li>
+                </ul>
+            </div>
+
+            <div class="rules-section">
+                <h3>Pitch Count &amp; Rest Requirements</h3>
+                <table class="pitch-table">
+                    <thead><tr><th>Pitches Thrown</th><th>Rest Required</th></tr></thead>
+                    <tbody>
+                        <tr><td>0 \u2013 20</td><td>No rest required</td></tr>
+                        <tr><td>21 \u2013 35</td><td>1 calendar day</td></tr>
+                        <tr><td>36 \u2013 50</td><td>2 calendar days</td></tr>
+                        <tr><td>51 \u2013 65</td><td>3 calendar days</td></tr>
+                        <tr><td>66 \u2013 75</td><td>4 calendar days</td></tr>
+                    </tbody>
+                </table>
+                <ul class="rules-list" style="margin-top:0.75rem">
+                    <li><span class="rule-num">&bull;</span><span>Max pitches by age: <strong>8 yrs = 50</strong> &middot; <strong>9 yrs = 75</strong> &middot; <strong>10 yrs = 75</strong>. Exceeding 76+ results in manager ejection.</span></li>
+                    <li><span class="rule-num">&bull;</span><span>Managers, coaches, and scorekeepers should alert the opposing manager as pitch limits approach. Final responsibility rests with the pitcher's manager.</span></li>
+                    <li><span class="rule-num">&bull;</span><span>A pitcher who delivers <strong>41 or more pitches</strong> in a game cannot play catcher for the remainder of that day.</span></li>
+                    <li><span class="rule-num">&bull;</span><span>Pitchers may finish facing the current batter without adding pitches to their rest-day count.</span></li>
+                </ul>
+            </div>
+
+            <div class="rules-section">
+                <h3>Pitching Mechanics</h3>
+                <ul class="rules-list">
+                    <li><span class="rule-num">18</span><span>Pitcher may <strong>not</strong> bring pitching hand to lips or mouth while in contact with the pitching rubber.</span></li>
+                    <li><span class="rule-num">19</span><span>Catchers who play <strong>3 or fewer innings</strong> cannot throw 21+ pitches the same day.</span></li>
+                    <li><span class="rule-num">20</span><span>If a pitcher reaches 40 pitches while facing a batter, they may complete that batter while maintaining catcher eligibility.</span></li>
+                    <li><span class="rule-num">21</span><span>A manager's timeout for a pitching change does not count as a mound visit if substitution occurs before discussing plays with defenders.</span></li>
+                </ul>
+            </div>
+        </div>`;
+    }
+
+    // ── Data parsing ──────────────────────────────────────────────────────────
     function parseGamesSheet(csv) {
         const lines = csv.trim().split('\n');
         const games = [];
@@ -461,87 +674,150 @@
             if (lines[i].includes('Home Team')) { hi = i; break; }
         }
         if (hi === -1) return [];
-        const h        = parseCSVLine(lines[hi]).map(s => s.toLowerCase());
-        const dateIdx  = h.findIndex(s => s.includes('date'));
-        const homeIdx  = h.findIndex(s => s.includes('home'));
-        const awayIdx  = h.findIndex(s => s.includes('away'));
-        const timeIdx  = h.findIndex(s => s.includes('start time'));
-        const locIdx   = h.findIndex(s => s.includes('location'));
-        const fieldIdx = h.findIndex(s => s === 'field');
-        const plateIdx = h.findIndex(s => s.includes('plate'));
-        const fumpIdx  = h.findIndex(s => s.includes('field umpire name'));
-        for (let i = hi + 1; i < lines.length; i++) {
+
+        const h       = parseCSVLine(lines[hi]).map(s => s.toLowerCase());
+        const dateIdx = h.findIndex(s => s.includes('date'));
+        const homeIdx = h.findIndex(s => s.includes('home'));
+        const awayIdx = h.findIndex(s => s.includes('away'));
+        const timeIdx = h.findIndex(s => s.includes('start time'));
+        const locIdx  = h.findIndex(s => s.includes('location'));
+        const fldIdx  = h.findIndex(s => s === 'field');
+        const pltIdx  = h.findIndex(s => s.includes('plate'));
+        const fupIdx  = h.findIndex(s => s.includes('field umpire name'));
+
+        for (let i = hi+1; i < lines.length; i++) {
             const c = parseCSVLine(lines[i]);
             if (!c[dateIdx]) continue;
             games.push({
-                date:        c[dateIdx]  || '',
-                homeTeam:    (c[homeIdx] || '').toUpperCase(),
-                awayTeam:    (c[awayIdx] || '').toUpperCase(),
-                startTime:   c[timeIdx]  || '',
-                location:    c[locIdx]   || '',
-                field:       c[fieldIdx] || '',
-                plateUmpire: c[plateIdx] || '',
-                fieldUmpire: c[fumpIdx]  || '',
+                date:      normalizeDate(c[dateIdx] || ''),
+                homeTeam:  (c[homeIdx]||'').toUpperCase(),
+                awayTeam:  (c[awayIdx]||'').toUpperCase(),
+                startTime: c[timeIdx] || '',
+                location:  c[locIdx]  || '',
+                field:     c[fldIdx]  || '',
+                plateUmp:  c[pltIdx]  || '',
+                fieldUmp:  c[fupIdx]  || '',
             });
         }
         return games;
     }
 
     function parsePracticesSheet(csv) {
-        const lines  = csv.trim().split('\n');
-        const fields = [];
-        let hi = -1;
-        for (let i = 0; i < Math.min(10, lines.length); i++) {
-            const lower = lines[i].toLowerCase();
-            if ((lower.includes('monday') || lower.includes('tuesday')) &&
-                (lower.includes('wednesday') || lower.includes('thursday'))) {
-                hi = i; break;
+        const lines = csv.trim().split('\n');
+        if (!lines.length) return [];
+
+        // Detect STYLE B: first row has 'date' or 'team' columns
+        const firstRow = parseCSVLine(lines[0]).map(c => c.trim().toLowerCase());
+        const hasDate  = firstRow.some(c => c === 'date');
+        const hasTeam  = firstRow.some(c => c === 'team' || c.includes('team name'));
+
+        if (hasDate || hasTeam) {
+            const dateI  = firstRow.findIndex(c => c === 'date');
+            const timeI  = firstRow.findIndex(c => c.includes('time'));
+            const teamI  = firstRow.findIndex(c => c === 'team' || c.includes('team name'));
+            const fieldI = firstRow.findIndex(c => c.includes('field') || c.includes('location'));
+            const coachI = firstRow.findIndex(c => c.includes('coach') || c.includes('manager'));
+
+            const byDate = {};
+            for (let i = 1; i < lines.length; i++) {
+                const c = parseCSVLine(lines[i]);
+                const rawDate = (c[dateI] || '').trim();
+                if (!rawDate) continue;
+                const normDate = normalizeDate(rawDate);
+                if (!byDate[normDate]) byDate[normDate] = [];
+                byDate[normDate].push({
+                    time:  (c[timeI]  || '').trim(),
+                    team:  (c[teamI]  || '').trim(),
+                    field: (c[fieldI] || '').trim(),
+                    coach: (c[coachI] || '').trim(),
+                });
+            }
+
+            const mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            return Object.entries(byDate)
+                .sort(([a],[b]) => a.localeCompare(b))
+                .map(([dateKey, rows]) => {
+                    const p   = dateKey.split('/');
+                    const dt  = new Date(+p[2], +p[0]-1, +p[1]);
+                    const day = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()];
+                    return {
+                        name:  `${day}, ${mo[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}`,
+                        slots: rows.map(r => ({
+                            time: r.time,
+                            flat: `${r.team}${r.field ? ' \u2014 ' + r.field : ''}${r.coach ? ' (' + r.coach + ')' : ''}`,
+                        })),
+                    };
+                });
+        }
+
+        // STYLE A — multi-section field schedule (Mon–Sat grid)
+        const sections = [];
+        let cur = null;
+        let monI=-1, tueI=-1, wedI=-1, thuI=-1, friI=-1, satI=-1;
+
+        for (let i = 0; i < lines.length; i++) {
+            const cells = parseCSVLine(lines[i]);
+            const c0 = (cells[0] || '').trim();
+            const c1 = (cells[1] || '').trim().toLowerCase();
+
+            if (!c0 && (c1 === 'monday' || c1.startsWith('mon'))) {
+                monI = cells.findIndex(c => /^mon/i.test(c.trim()));
+                tueI = cells.findIndex(c => /^tue/i.test(c.trim()));
+                wedI = cells.findIndex(c => /^wed/i.test(c.trim()));
+                thuI = cells.findIndex(c => /^thu/i.test(c.trim()));
+                friI = cells.findIndex(c => /^fri/i.test(c.trim()));
+                satI = cells.findIndex(c => /^sat/i.test(c.trim()));
+                continue;
+            }
+
+            if (c0 && /^\d/.test(c0) && cur) {
+                cur.slots.push({
+                    time: c0,
+                    mon: monI >= 0 ? (cells[monI]||'') : '',
+                    tue: tueI >= 0 ? (cells[tueI]||'') : '',
+                    wed: wedI >= 0 ? (cells[wedI]||'') : '',
+                    thu: thuI >= 0 ? (cells[thuI]||'') : '',
+                    fri: friI >= 0 ? (cells[friI]||'') : '',
+                    sat: satI >= 0 ? (cells[satI]||'') : '',
+                    flat: '',
+                });
+                continue;
+            }
+
+            if (c0 && !/^\d/.test(c0)) {
+                cur = { name: c0, slots: [] };
+                sections.push(cur);
             }
         }
-        if (hi === -1) return [];
-        const h      = parseCSVLine(lines[hi]).map(s => s.toLowerCase());
-        const fiIdx  = h.findIndex(s => s.includes('field'));
-        const monIdx = h.findIndex(s => s.includes('monday'));
-        const tueIdx = h.findIndex(s => s.includes('tuesday'));
-        const wedIdx = h.findIndex(s => s.includes('wednesday'));
-        const thuIdx = h.findIndex(s => s.includes('thursday'));
-        const friIdx = h.findIndex(s => s.includes('friday'));
-        const satIdx = h.findIndex(s => s.includes('saturday'));
-        for (let i = hi + 1; i < lines.length; i++) {
-            const c         = parseCSVLine(lines[i]);
-            const fieldName = fiIdx >= 0 ? (c[fiIdx] || '') : '';
-            if (!fieldName) continue;
-            fields.push({
-                field: fieldName,
-                mon:   monIdx >= 0 ? (c[monIdx] || '') : '',
-                tue:   tueIdx >= 0 ? (c[tueIdx] || '') : '',
-                wed:   wedIdx >= 0 ? (c[wedIdx] || '') : '',
-                thu:   thuIdx >= 0 ? (c[thuIdx] || '') : '',
-                fri:   friIdx >= 0 ? (c[friIdx] || '') : '',
-                sat:   satIdx >= 0 ? (c[satIdx] || '') : '',
-            });
-        }
-        return fields;
+
+        return sections.filter(s => s.slots.length > 0);
     }
 
+    // ── Load ──────────────────────────────────────────────────────────────────
     async function loadData() {
         try {
-            document.getElementById('gamesContainer').innerHTML = '<div class="loading">Loading schedule\u2026</div>';
-            const [gamesCsv, practicesCsv] = await Promise.all([
+            document.getElementById('gamesContainer').innerHTML = '<div class="loading">Loading schedule&hellip;</div>';
+
+            const [gCsv, pCsv] = await Promise.all([
                 fetch(`https://docs.google.com/spreadsheets/d/${GAMES_SHEET_ID}/export?format=csv&gid=${GAMES_GID}`).then(r => r.text()),
                 fetch(`https://docs.google.com/spreadsheets/d/${PRACTICES_SHEET_ID}/export?format=csv&gid=${PRACTICES_GID}`).then(r => r.text()),
             ]);
-            allGames = parseGamesSheet(gamesCsv).filter(g => g.homeTeam && g.awayTeam);
-            allGames.sort((a, b) => new Date(a.date) - new Date(b.date));
-            allPractices = parsePracticesSheet(practicesCsv);
-            document.getElementById('lastUpdated').textContent = `Last updated: ${new Date().toLocaleString()}`;
+
+            allGames = parseGamesSheet(gCsv).filter(g => g.homeTeam && g.awayTeam);
+            allGames.sort((a,b) => new Date(a.date)-new Date(b.date));
+
+            allPractices = parsePracticesSheet(pCsv);
+
+            document.getElementById('lastUpdated').textContent = `Updated ${new Date().toLocaleTimeString()}`;
             document.getElementById('refreshTime').textContent = new Date().toLocaleTimeString();
-            renderWeekSelector();
+
+            if (currentTab === 'games') renderWeekSelector();
             renderContent();
+
         } catch (err) {
             console.error(err);
             document.getElementById('gamesContainer').innerHTML =
-                `<div class="error">Unable to load schedule. Please check your connection and try refreshing.</div>`;
+                `<div class="error">Unable to load schedule &mdash; check your connection and refresh.</div>`;
         }
         setTimeout(loadData, 4 * 60 * 60 * 1000);
     }
