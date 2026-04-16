@@ -10,19 +10,19 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%);
             padding: 1rem;
             min-height: 100vh;
         }
-        
+
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
-        
+
         .header {
             background: white;
             padding: 2rem 1.5rem;
@@ -34,43 +34,43 @@
             gap: 2rem;
             flex-wrap: wrap;
         }
-        
+
         .header-logo {
             width: 100px;
             height: 100px;
             object-fit: contain;
             flex-shrink: 0;
         }
-        
+
         .header-content h1 {
             font-size: 28px;
             margin-bottom: 0.5rem;
             color: #1a1a1a;
         }
-        
+
         .header-content p {
             color: #666;
             font-size: 15px;
             margin-bottom: 0.5rem;
         }
-        
+
         .header-content a {
             color: #2c5aa0;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
         }
-        
+
         .header-content a:hover {
             text-decoration: underline;
         }
-        
+
         .last-updated {
             font-size: 12px;
             color: #999;
             margin-top: 0.5rem;
         }
-        
+
         .controls {
             display: flex;
             gap: 1rem;
@@ -82,12 +82,13 @@
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        
+
         .tab-buttons {
             display: flex;
             gap: 0.5rem;
+            flex-shrink: 0;
         }
-        
+
         .tab-btn {
             padding: 0.6rem 1.2rem;
             border: 1px solid #ddd;
@@ -98,18 +99,18 @@
             font-weight: 500;
             transition: all 0.2s;
         }
-        
+
         .tab-btn.active {
             background: #2c5aa0;
             color: white;
             border-color: #2c5aa0;
         }
-        
+
         .tab-btn:hover:not(.active) {
             border-color: #999;
             background: #f9f9f9;
         }
-        
+
         .week-selector {
             display: flex;
             gap: 0.5rem;
@@ -117,7 +118,7 @@
             flex: 1;
             min-width: 300px;
         }
-        
+
         .week-btn {
             padding: 0.6rem 1rem;
             border: 1px solid #ddd;
@@ -128,114 +129,145 @@
             transition: all 0.2s;
             white-space: nowrap;
         }
-        
+
         .week-btn.active {
             background: #28a745;
             color: white;
             border-color: #28a745;
         }
-        
+
         .week-btn:hover:not(.active) {
             border-color: #999;
         }
-        
-        .games-container {
-            display: grid;
-            gap: 0.5rem;
+
+        /* ── Calendar ── */
+        .calendar-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .game-card {
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(130px, 1fr));
+            gap: 0.5rem;
+            min-width: 700px;
+        }
+
+        .calendar-day {
             background: white;
             border-radius: 8px;
-            padding: 0.75rem 1rem;
+            overflow: hidden;
             box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
+            min-height: 110px;
         }
 
-        .game-when {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            min-width: 90px;
-            flex-shrink: 0;
+        .cal-day-header {
+            text-align: center;
+            padding: 0.5rem 0.25rem;
+            background: #f9f9f9;
+            border-bottom: 1px solid #f0f0f0;
         }
 
-        .game-date {
-            font-size: 11px;
-            color: #999;
-            text-transform: uppercase;
+        .calendar-day.today .cal-day-header {
+            background: #2c5aa0;
+        }
+
+        .cal-day-name {
+            font-size: 10px;
             font-weight: 700;
-            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: #aaa;
+            letter-spacing: 0.5px;
         }
 
-        .game-time {
-            font-size: 14px;
+        .calendar-day.today .cal-day-name {
+            color: rgba(255,255,255,0.75);
+        }
+
+        .cal-day-num {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1.2;
+        }
+
+        .calendar-day.today .cal-day-num {
+            color: white;
+        }
+
+        .calendar-day.past-day {
+            opacity: 0.5;
+        }
+
+        .cal-events {
+            padding: 0.4rem;
+        }
+
+        .cal-empty {
+            text-align: center;
+            color: #e0e0e0;
+            font-size: 22px;
+            padding: 1.25rem 0;
+        }
+
+        .cal-game {
+            background: #eef2fa;
+            border-left: 3px solid #2c5aa0;
+            border-radius: 4px;
+            padding: 0.35rem 0.4rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .cal-practice-item {
+            background: #fff8e1;
+            border-left: 3px solid #ff9800;
+            border-radius: 4px;
+            padding: 0.35rem 0.4rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .cal-time {
             font-weight: 700;
             color: #2c5aa0;
+            font-size: 11px;
+            margin-bottom: 0.2rem;
         }
 
-        .game-matchup {
+        .cal-practice-item .cal-time {
+            color: #ff9800;
+        }
+
+        .cal-team-row {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .team {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .team-logo {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-        }
-
-        .team-name {
-            font-size: 14px;
-            font-weight: 700;
+            gap: 0.2rem;
+            font-size: 10px;
+            font-weight: 600;
             color: #1a1a1a;
         }
 
-        .vs {
-            font-size: 11px;
-            color: #ccc;
-            font-weight: 700;
+        .cal-logo {
+            width: 14px;
+            height: 14px;
+            object-fit: contain;
             flex-shrink: 0;
         }
 
-        .game-details {
-            display: flex;
-            gap: 1.25rem;
-            flex-wrap: wrap;
-            margin-left: auto;
-        }
-
-        .detail-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .detail-label {
-            font-size: 10px;
-            color: #bbb;
-            text-transform: uppercase;
+        .cal-vs {
+            color: #ccc;
+            font-size: 9px;
             font-weight: 700;
-            letter-spacing: 0.3px;
+            text-align: center;
+            padding: 0.1rem 0;
         }
 
-        .detail-value {
-            font-size: 13px;
-            color: #444;
-            font-weight: 500;
+        .cal-field {
+            color: #999;
+            font-size: 9px;
+            margin-top: 0.25rem;
         }
-        
+
+        /* ── Standings ── */
         .standings-table {
             width: 100%;
             background: white;
@@ -298,62 +330,7 @@
             background: #f9f9f9;
         }
 
-        .practice-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            border-left: 4px solid #ff9800;
-        }
-        
-        .practice-header {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .practice-date {
-            font-size: 12px;
-            color: #999;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-        
-        .practice-time {
-            font-size: 15px;
-            font-weight: 700;
-            color: #ff9800;
-            background: #fff8e1;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-        }
-        
-        .practice-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-        }
-        
-        .practice-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .practice-label {
-            font-size: 11px;
-            color: #999;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-        
-        .practice-value {
-            font-size: 14px;
-            color: #333;
-            font-weight: 500;
-        }
-        
+        /* ── Misc ── */
         .no-games {
             background: white;
             padding: 2.5rem;
@@ -362,14 +339,14 @@
             color: #999;
             font-size: 15px;
         }
-        
+
         .loading {
             text-align: center;
             padding: 2.5rem;
             color: #999;
             font-size: 15px;
         }
-        
+
         .error {
             background: #ffebee;
             border-left: 4px solid #f44336;
@@ -379,7 +356,7 @@
             margin-bottom: 1rem;
             font-size: 14px;
         }
-        
+
         .refresh-indicator {
             font-size: 12px;
             color: #999;
@@ -387,31 +364,23 @@
             margin-top: 2rem;
             padding: 1rem;
         }
-        
+
         @media (max-width: 600px) {
             .header {
                 flex-direction: column;
                 text-align: center;
                 gap: 1rem;
             }
-            
+
             .header-logo {
                 width: 80px;
                 height: 80px;
             }
-            
-            .game-matchup {
-                gap: 1rem;
-            }
-            
-            .game-details {
-                grid-template-columns: 1fr;
-            }
-            
+
             .controls {
                 flex-direction: column;
             }
-            
+
             .week-selector {
                 width: 100%;
             }
@@ -429,7 +398,7 @@
                 <div class="last-updated" id="lastUpdated"></div>
             </div>
         </div>
-        
+
         <div class="controls">
             <div class="tab-buttons">
                 <button class="tab-btn active" onclick="switchTab('games')">Games</button>
@@ -438,23 +407,22 @@
             </div>
             <div class="week-selector" id="weekSelector"></div>
         </div>
-        
-        <div id="gamesContainer" class="games-container">
+
+        <div id="gamesContainer">
             <div class="loading">Loading schedule...</div>
         </div>
-        
+
         <div class="refresh-indicator">
-            <p>📡 Auto-refreshing every 4 hours • Last refresh: <span id="refreshTime">Just now</span></p>
+            <p>📡 Auto-refreshing every 4 hours · Last refresh: <span id="refreshTime">Just now</span></p>
         </div>
     </div>
 
     <script>
-        const GAMES_SHEET_ID = '12J8Wp88eVR3vQhuRcziJwdO2VY_SbgTw';
-        const GAMES_GID = '514974197';
+        const GAMES_SHEET_ID     = '12J8Wp88eVR3vQhuRcziJwdO2VY_SbgTw';
+        const GAMES_GID          = '514974197';
         const PRACTICES_SHEET_ID = '1KFTAMAi0vVP4tSvT_9p6hJB22JLKIFdaMpLzRy966LI';
-        const PRACTICES_GID = '558705749';
-        
-        // MLB team logo URLs from mlbstatic.com (team ID based)
+        const PRACTICES_GID      = '558705749';
+
         const teamLogoMap = {
             'BREWERS':      'https://www.mlbstatic.com/team-logos/158.svg',
             'ORIOLES':      'https://www.mlbstatic.com/team-logos/110.svg',
@@ -467,54 +435,59 @@
             'RANGERS':      'https://www.mlbstatic.com/team-logos/140.svg',
             'GUARDIANS':    'https://www.mlbstatic.com/team-logos/114.svg'
         };
-        
-        let allGames = [];
+
+        let allGames     = [];
         let allPractices = [];
-        let selectedWeek = null;
-        let currentTab = 'games';
-        
+        let selectedWeek = null;   // "YYYY-MM-DD" of the Sunday that starts the week
+        let currentTab   = 'games';
+
+        // ── Helpers ──────────────────────────────────────────────────────────────────
+
         function getTeamLogo(teamName) {
             return teamLogoMap[teamName] || createDefaultLogo(teamName);
         }
-        
+
         function createDefaultLogo(name) {
             const initials = name.substring(0, 2).toUpperCase();
             return `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23999" width="100" height="100"/%3E%3Ctext x="50" y="60" font-size="32" font-weight="bold" fill="%23FFF" text-anchor="middle"%3E${initials}%3C/text%3E%3C/svg%3E`;
         }
-        
-        function getWeekNumber(dateStr) {
-            if (typeof dateStr !== 'string') return 0;
+
+        // Returns "YYYY-MM-DD" of the Sunday that starts the week containing dateStr ("M/D/YYYY")
+        function getWeekKey(dateStr) {
+            if (typeof dateStr !== 'string') return null;
             const parts = dateStr.split('/');
-            if (parts.length !== 3) return 0;
-            const date = new Date(parts[2], parts[0] - 1, parts[1]);
-            const start = new Date(date.getFullYear(), 0, 1);
-            const diff = date - start;
-            const oneWeek = 1000 * 60 * 60 * 24 * 7;
-            return Math.floor(diff / oneWeek);
+            if (parts.length !== 3) return null;
+            const date   = new Date(parseInt(parts[2]), parseInt(parts[0]) - 1, parseInt(parts[1]));
+            const sunday = new Date(date);
+            sunday.setDate(date.getDate() - date.getDay());
+            const y = sunday.getFullYear();
+            const m = String(sunday.getMonth() + 1).padStart(2, '0');
+            const d = String(sunday.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
         }
-        
-        function getWeekLabel(dateStr) {
-            if (typeof dateStr !== 'string') return 'Unknown';
-            const parts = dateStr.split('/');
-            if (parts.length !== 3) return dateStr;
-            const date = new Date(parts[2], parts[0] - 1, parts[1]);
-            const weekStart = new Date(date);
-            weekStart.setDate(date.getDate() - date.getDay());
-            const weekEnd = new Date(weekStart);
-            weekEnd.setDate(weekStart.getDate() + 6);
-            
-            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            return `${monthNames[weekStart.getMonth()]} ${weekStart.getDate()} - ${monthNames[weekEnd.getMonth()]} ${weekEnd.getDate()}`;
+
+        // Returns "YYYY-MM-DD" of the Sunday of the current week
+        function getCurrentWeekKey() {
+            const today  = new Date();
+            const sunday = new Date(today);
+            sunday.setDate(today.getDate() - today.getDay());
+            const y = sunday.getFullYear();
+            const m = String(sunday.getMonth() + 1).padStart(2, '0');
+            const d = String(sunday.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
         }
-        
-        function formatDate(dateStr) {
-            if (typeof dateStr !== 'string') return 'Unknown';
-            const parts = dateStr.split('/');
-            if (parts.length !== 3) return dateStr;
-            const date = new Date(parts[2], parts[0] - 1, parts[1]);
-            return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+        // weekKey "YYYY-MM-DD" → "Apr 13 – Apr 19" label
+        function getWeekLabel(weekKey) {
+            const [y, m, d]  = weekKey.split('-').map(Number);
+            const sunday      = new Date(y, m - 1, d);
+            const saturday    = new Date(y, m - 1, d + 6);
+            const months      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            return `${months[sunday.getMonth()]} ${sunday.getDate()} \u2013 ${months[saturday.getMonth()]} ${saturday.getDate()}`;
         }
-        
+
+        // ── Tab / week controls ──────────────────────────────────────────────────────────
+
         function switchTab(tab) {
             currentTab = tab;
             document.querySelectorAll('.tab-btn').forEach((btn, i) => {
@@ -529,47 +502,140 @@
             renderWeekSelector();
             renderContent();
         }
-        
-        function selectWeek(weekNum) {
-            selectedWeek = weekNum;
+
+        function selectWeek(weekKey) {
+            selectedWeek = weekKey;
             document.querySelectorAll('.week-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.week == weekNum);
+                btn.classList.toggle('active', btn.dataset.week === weekKey);
             });
             renderContent();
         }
-        
+
         function renderWeekSelector() {
-            const data = currentTab === 'games' ? allGames : allPractices;
-            const weeks = [...new Set(data.map(g => getWeekNumber(g.date || g.date)).filter(w => !isNaN(w)))].sort((a, b) => a - b);
-            
+            const data    = currentTab === 'games' ? allGames : allPractices;
+            const weekSet = new Set(data.map(item => getWeekKey(item.date)).filter(Boolean));
+            const weeks   = [...weekSet].sort();
+
             if (weeks.length === 0) {
                 document.getElementById('weekSelector').innerHTML = '';
                 return;
             }
-            
+
+            // Default to the current week, or nearest future week
             if (selectedWeek === null || !weeks.includes(selectedWeek)) {
-                selectedWeek = weeks[0];
+                const currentKey  = getCurrentWeekKey();
+                const futureWeeks = weeks.filter(w => w >= currentKey);
+                selectedWeek = futureWeeks.length > 0 ? futureWeeks[0] : weeks[weeks.length - 1];
             }
-            
-            const selector = document.getElementById('weekSelector');
-            const sample = data.find(d => getWeekNumber(d.date) === weeks[0]);
-            selector.innerHTML = weeks.map(w => {
-                const sample = data.find(d => getWeekNumber(d.date) === w);
-                return `<button class="week-btn ${w === selectedWeek ? 'active' : ''}" data-week="${w}" onclick="selectWeek(${w})">${getWeekLabel(sample.date)}</button>`;
-            }).join('');
+
+            document.getElementById('weekSelector').innerHTML = weeks.map(w =>
+                `<button class="week-btn${w === selectedWeek ? ' active' : ''}" data-week="${w}" onclick="selectWeek('${w}')">${getWeekLabel(w)}</button>`
+            ).join('');
         }
-        
+
+        // ── Render ──────────────────────────────────────────────────────────────────
+
+        function renderContent() {
+            if (currentTab === 'games')         renderGames();
+            else if (currentTab === 'practices') renderPractices();
+            else                                 renderStandings();
+        }
+
+        function renderGames() {
+            if (!selectedWeek) return;
+            const weekGames = allGames.filter(g => getWeekKey(g.date) === selectedWeek);
+            renderCalendarGrid(weekGames, 'games');
+        }
+
+        function renderPractices() {
+            if (!selectedWeek) return;
+            const weekPractices = allPractices.filter(p => getWeekKey(p.date) === selectedWeek);
+            renderCalendarGrid(weekPractices, 'practices');
+        }
+
+        function renderCalendarGrid(items, type) {
+            const container = document.getElementById('gamesContainer');
+
+            const [y, m, d] = selectedWeek.split('-').map(Number);
+            const today      = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+            // Build lookup: "M/D/YYYY" → items[]
+            const byDay = {};
+            items.forEach(item => {
+                if (!byDay[item.date]) byDay[item.date] = [];
+                byDay[item.date].push(item);
+            });
+
+            const cells = Array.from({ length: 7 }, (_, i) => {
+                const day     = new Date(y, m - 1, d + i);
+                const dateKey = `${day.getMonth() + 1}/${day.getDate()}/${day.getFullYear()}`;
+                const isToday = day.toDateString() === today.toDateString();
+                const isPast  = day < today && !isToday;
+                const dayItems = byDay[dateKey] || [];
+
+                const eventsHtml = dayItems.length === 0
+                    ? '<div class="cal-empty">—</div>'
+                    : dayItems.map(item => type === 'games' ? renderGameCell(item) : renderPracticeCell(item)).join('');
+
+                return `
+                    <div class="calendar-day${isToday ? ' today' : ''}${isPast ? ' past-day' : ''}">
+                        <div class="cal-day-header">
+                            <div class="cal-day-name">${dayNames[i]}</div>
+                            <div class="cal-day-num">${day.getDate()}</div>
+                        </div>
+                        <div class="cal-events">${eventsHtml}</div>
+                    </div>`;
+            }).join('');
+
+            container.innerHTML = `<div class="calendar-wrapper"><div class="calendar-grid">${cells}</div></div>`;
+        }
+
+        function renderGameCell(game) {
+            const homeLogo = getTeamLogo(game.homeTeam);
+            const awayLogo = getTeamLogo(game.awayTeam);
+            const defHome  = createDefaultLogo(game.homeTeam);
+            const defAway  = createDefaultLogo(game.awayTeam);
+            return `
+                <div class="cal-game">
+                    <div class="cal-time">${game.startTime || '—'}</div>
+                    <div class="cal-team-row">
+                        <img src="${homeLogo}" class="cal-logo" onerror="this.onerror=null;this.src='${defHome}'">
+                        <span>${game.homeTeam}</span>
+                    </div>
+                    <div class="cal-vs">vs</div>
+                    <div class="cal-team-row">
+                        <img src="${awayLogo}" class="cal-logo" onerror="this.onerror=null;this.src='${defAway}'">
+                        <span>${game.awayTeam}</span>
+                    </div>
+                    ${game.field ? `<div class="cal-field">${game.field}</div>` : ''}
+                </div>`;
+        }
+
+        function renderPracticeCell(practice) {
+            return `
+                <div class="cal-practice-item">
+                    <div class="cal-time">${practice.time || '—'}</div>
+                    <div class="cal-team-row"><span>${practice.team || '—'}</span></div>
+                    ${practice.field ? `<div class="cal-field">${practice.field}</div>` : ''}
+                </div>`;
+        }
+
+        // ── Standings (hardcoded) ───────────────────────────────────────────────────────
+
         const standings = [
-            { team: 'GUARDIANS', w: 3, l: 0, t: 0, pct: '1.000', gb: '-',  rs: 45, ra: 16, diff: 29,  strk: 'W3', home: '0-0', away: '3-0' },
-            { team: 'RANGERS',   w: 2, l: 1, t: 0, pct: '0.667', gb: '1.0', rs: 31, ra: 28, diff: 3,   strk: 'W2', home: '0-1', away: '2-0' },
-            { team: 'DODGERS',   w: 2, l: 1, t: 0, pct: '0.667', gb: '1.0', rs: 27, ra: 25, diff: 2,   strk: 'W1', home: '1-1', away: '1-0' },
-            { team: 'BREWERS',   w: 2, l: 1, t: 0, pct: '0.667', gb: '1.0', rs: 34, ra: 35, diff: -1,  strk: 'W1', home: '1-1', away: '1-0' },
-            { team: 'NATIONALS', w: 1, l: 1, t: 0, pct: '0.500', gb: '1.5', rs: 25, ra: 23, diff: 2,   strk: 'W1', home: '0-0', away: '1-1' },
-            { team: 'BRAVES',    w: 1, l: 1, t: 0, pct: '0.500', gb: '1.5', rs: 26, ra: 26, diff: 0,   strk: 'L1', home: '1-1', away: '0-0' },
-            { team: 'ORIOLES',   w: 1, l: 2, t: 0, pct: '0.333', gb: '2.0', rs: 33, ra: 34, diff: -1,  strk: 'L1', home: '1-1', away: '0-1' },
-            { team: 'DIAMONDBACKS', w: 0, l: 1, t: 0, pct: '0.000', gb: '2.0', rs: 3,  ra: 9,  diff: -6,  strk: 'L1', home: '0-0', away: '0-1' },
-            { team: 'GIANTS',    w: 1, l: 2, t: 0, pct: '0.333', gb: '2.0', rs: 21, ra: 39, diff: -18, strk: 'L2', home: '1-2', away: '0-0' },
-            { team: 'BLUE JAYS', w: 0, l: 3, t: 0, pct: '0.000', gb: '3.0', rs: 27, ra: 36, diff: -9,  strk: 'L3', home: '0-1', away: '0-2' },
+            { team: 'GUARDIANS',    w: 3, l: 0, t: 0, pct: '1.000', gb: '-',   rs: 45, ra: 16, diff:  29, strk: 'W3', home: '0-0', away: '3-0' },
+            { team: 'RANGERS',      w: 2, l: 1, t: 0, pct: '0.667', gb: '1.0', rs: 31, ra: 28, diff:   3, strk: 'W2', home: '0-1', away: '2-0' },
+            { team: 'DODGERS',      w: 2, l: 1, t: 0, pct: '0.667', gb: '1.0', rs: 27, ra: 25, diff:   2, strk: 'W1', home: '1-1', away: '1-0' },
+            { team: 'BREWERS',      w: 2, l: 1, t: 0, pct: '0.667', gb: '1.0', rs: 34, ra: 35, diff:  -1, strk: 'W1', home: '1-1', away: '1-0' },
+            { team: 'NATIONALS',    w: 1, l: 1, t: 0, pct: '0.500', gb: '1.5', rs: 25, ra: 23, diff:   2, strk: 'W1', home: '0-0', away: '1-1' },
+            { team: 'BRAVES',       w: 1, l: 1, t: 0, pct: '0.500', gb: '1.5', rs: 26, ra: 26, diff:   0, strk: 'L1', home: '1-1', away: '0-0' },
+            { team: 'ORIOLES',      w: 1, l: 2, t: 0, pct: '0.333', gb: '2.0', rs: 33, ra: 34, diff:  -1, strk: 'L1', home: '1-1', away: '0-1' },
+            { team: 'DIAMONDBACKS', w: 0, l: 1, t: 0, pct: '0.000', gb: '2.0', rs:  3, ra:  9, diff:  -6, strk: 'L1', home: '0-0', away: '0-1' },
+            { team: 'GIANTS',       w: 1, l: 2, t: 0, pct: '0.333', gb: '2.0', rs: 21, ra: 39, diff: -18, strk: 'L2', home: '1-2', away: '0-0' },
+            { team: 'BLUE JAYS',    w: 0, l: 3, t: 0, pct: '0.000', gb: '3.0', rs: 27, ra: 36, diff:  -9, strk: 'L3', home: '0-1', away: '0-2' },
         ];
 
         function renderStandings() {
@@ -605,189 +671,72 @@
                 </table>`;
         }
 
-        function renderContent() {
-            if (currentTab === 'games') {
-                renderGames();
-            } else if (currentTab === 'practices') {
-                renderPractices();
-            } else {
-                renderStandings();
-            }
-        }
-        
-        function isUpcoming(dateStr) {
-            if (typeof dateStr !== 'string') return false;
-            const parts = dateStr.split('/');
-            if (parts.length !== 3) return false;
-            const gameDate = new Date(parts[2], parts[0] - 1, parts[1]);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            return gameDate >= today;
-        }
+        // ── Data loading ──────────────────────────────────────────────────────────────────
 
-        function renderGames() {
-            const container = document.getElementById('gamesContainer');
-            let gamesToShow = allGames.filter(g => isUpcoming(g.date));
-
-            if (selectedWeek !== null) {
-                gamesToShow = gamesToShow.filter(g => getWeekNumber(g.date) === selectedWeek);
-            }
-
-            if (gamesToShow.length === 0) {
-                container.innerHTML = '<div class="no-games">No upcoming games this week</div>';
-                return;
-            }
-
-            container.innerHTML = gamesToShow.map(game => `
-                <div class="game-card">
-                    <div class="game-when">
-                        <div class="game-date">${formatDate(game.date)}</div>
-                        <div class="game-time">${game.startTime || game.time || '—'}</div>
-                    </div>
-                    <div class="game-matchup">
-                        <div class="team">
-                            <img src="${getTeamLogo(game.homeTeam)}" alt="${game.homeTeam}" class="team-logo" onerror="this.onerror=null;this.src='${createDefaultLogo(game.homeTeam)}'">
-                            <div class="team-name">${game.homeTeam}</div>
-                        </div>
-                        <div class="vs">vs</div>
-                        <div class="team">
-                            <img src="${getTeamLogo(game.awayTeam)}" alt="${game.awayTeam}" class="team-logo" onerror="this.onerror=null;this.src='${createDefaultLogo(game.awayTeam)}'">
-                            <div class="team-name">${game.awayTeam}</div>
-                        </div>
-                    </div>
-                    <div class="game-details">
-                        <div class="detail-item">
-                            <div class="detail-label">Field</div>
-                            <div class="detail-value">${game.field || '—'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Plate Ump</div>
-                            <div class="detail-value">${game.plateUmpire || '—'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Field Ump</div>
-                            <div class="detail-value">${game.fieldUmpire || '—'}</div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function renderPractices() {
-            const container = document.getElementById('gamesContainer');
-            let practicesToShow = allPractices.filter(p => isUpcoming(p.date));
-
-            if (selectedWeek !== null) {
-                practicesToShow = practicesToShow.filter(p => getWeekNumber(p.date) === selectedWeek);
-            }
-
-            if (practicesToShow.length === 0) {
-                container.innerHTML = '<div class="no-games">No upcoming practices this week</div>';
-                return;
-            }
-
-            container.innerHTML = practicesToShow.map(practice => `
-                <div class="practice-card">
-                    <div class="practice-header">
-                        <div class="practice-date">${formatDate(practice.date)}</div>
-                        <div class="practice-time">${practice.time || '—'}</div>
-                    </div>
-                    <div class="practice-details">
-                        <div class="practice-item">
-                            <div class="practice-label">Team</div>
-                            <div class="practice-value">${practice.team || '—'}</div>
-                        </div>
-                        <div class="practice-item">
-                            <div class="practice-label">Field</div>
-                            <div class="practice-value">${practice.field || '—'}</div>
-                        </div>
-                        <div class="practice-item">
-                            <div class="practice-label">Coach/Manager</div>
-                            <div class="practice-value">${practice.coach || '—'}</div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
         function parseGamesSheet(csv) {
             const lines = csv.trim().split('\n');
             const games = [];
-            
-            // Find header row
+
             let headerIdx = -1;
             for (let i = 0; i < Math.min(5, lines.length); i++) {
-                if (lines[i].includes('Home Team')) {
-                    headerIdx = i;
-                    break;
-                }
+                if (lines[i].includes('Home Team')) { headerIdx = i; break; }
             }
-            
             if (headerIdx === -1) return [];
-            
-            const headers = lines[headerIdx].split(',').map(h => h.trim().toLowerCase());
-            const dateIdx = headers.findIndex(h => h.includes('date'));
-            const homeIdx = headers.findIndex(h => h.includes('home'));
-            const awayIdx = headers.findIndex(h => h.includes('away'));
-            const timeIdx = headers.findIndex(h => h.includes('start time'));
-            const fieldIdx = headers.findIndex(h => h.includes('field'));
-            const plateIdx = headers.findIndex(h => h.includes('plate'));
+
+            const headers     = lines[headerIdx].split(',').map(h => h.trim().toLowerCase());
+            const dateIdx     = headers.findIndex(h => h.includes('date'));
+            const homeIdx     = headers.findIndex(h => h.includes('home'));
+            const awayIdx     = headers.findIndex(h => h.includes('away'));
+            const timeIdx     = headers.findIndex(h => h.includes('start time'));
+            const fieldIdx    = headers.findIndex(h => h.includes('field'));
+            const plateIdx    = headers.findIndex(h => h.includes('plate'));
             const fieldUmpIdx = headers.findIndex(h => h.includes('field umpire name'));
-            
+
             for (let i = headerIdx + 1; i < lines.length; i++) {
                 const cells = lines[i].split(',').map(c => c.trim());
                 if (!cells[dateIdx]) continue;
-                
                 games.push({
-                    date: cells[dateIdx],
-                    homeTeam: cells[homeIdx] || '',
-                    awayTeam: cells[awayIdx] || '',
-                    startTime: cells[timeIdx] || '',
-                    field: cells[fieldIdx] || '',
-                    plateUmpire: cells[plateIdx] || '',
+                    date:        cells[dateIdx],
+                    homeTeam:    cells[homeIdx]     || '',
+                    awayTeam:    cells[awayIdx]     || '',
+                    startTime:   cells[timeIdx]     || '',
+                    field:       cells[fieldIdx]    || '',
+                    plateUmpire: cells[plateIdx]    || '',
                     fieldUmpire: cells[fieldUmpIdx] || ''
                 });
             }
-            
             return games;
         }
-        
+
         function parsePracticesSheet(csv) {
-            const lines = csv.trim().split('\n');
+            const lines     = csv.trim().split('\n');
             const practices = [];
 
-            // Find header row
             let headerIdx = -1;
             for (let i = 0; i < Math.min(5, lines.length); i++) {
                 const lower = lines[i].toLowerCase();
-                if (lower.includes('date') || lower.includes('team')) {
-                    headerIdx = i;
-                    break;
-                }
+                if (lower.includes('date') || lower.includes('team')) { headerIdx = i; break; }
             }
-
             if (headerIdx === -1) return [];
 
-            const headers = lines[headerIdx].split(',').map(h => h.trim().toLowerCase());
-            const dateIdx = headers.findIndex(h => h.includes('date'));
-            const timeIdx = headers.findIndex(h => h.includes('time'));
-            const teamIdx = headers.findIndex(h => h.includes('team'));
+            const headers  = lines[headerIdx].split(',').map(h => h.trim().toLowerCase());
+            const dateIdx  = headers.findIndex(h => h.includes('date'));
+            const timeIdx  = headers.findIndex(h => h.includes('time'));
+            const teamIdx  = headers.findIndex(h => h.includes('team'));
             const fieldIdx = headers.findIndex(h => h.includes('field') || h.includes('location'));
             const coachIdx = headers.findIndex(h => h.includes('coach') || h.includes('manager'));
 
             for (let i = headerIdx + 1; i < lines.length; i++) {
                 const cells = lines[i].split(',').map(c => c.trim());
                 if (!cells[dateIdx]) continue;
-
                 practices.push({
-                    date: cells[dateIdx] || '',
-                    time: cells[timeIdx] || '',
-                    team: cells[teamIdx] || '',
+                    date:  cells[dateIdx]  || '',
+                    time:  cells[timeIdx]  || '',
+                    team:  cells[teamIdx]  || '',
                     field: cells[fieldIdx] || '',
                     coach: cells[coachIdx] || ''
                 });
             }
-
             return practices;
         }
 
@@ -795,7 +744,6 @@
             try {
                 document.getElementById('gamesContainer').innerHTML = '<div class="loading">Loading schedule...</div>';
 
-                // Fetch games and practices in parallel
                 const [gamesCsv, practicesCsv] = await Promise.all([
                     fetch(`https://docs.google.com/spreadsheets/d/${GAMES_SHEET_ID}/export?format=csv&gid=${GAMES_GID}`).then(r => r.text()),
                     fetch(`https://docs.google.com/spreadsheets/d/${PRACTICES_SHEET_ID}/export?format=csv&gid=${PRACTICES_GID}`).then(r => r.text())
@@ -807,23 +755,21 @@
                 allPractices = parsePracticesSheet(practicesCsv).filter(p => p.date);
                 allPractices.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-                // Update last updated time
-                document.getElementById('lastUpdated').textContent = `Last updated: ${new Date().toLocaleString()}`;
-                document.getElementById('refreshTime').textContent = new Date().toLocaleTimeString();
+                document.getElementById('lastUpdated').textContent  = `Last updated: ${new Date().toLocaleString()}`;
+                document.getElementById('refreshTime').textContent  = new Date().toLocaleTimeString();
 
                 renderWeekSelector();
                 renderContent();
 
             } catch (error) {
                 console.error('Error loading data:', error);
-                document.getElementById('gamesContainer').innerHTML = `<div class="error">Unable to load schedule. Please check your internet connection and try refreshing.</div>`;
+                document.getElementById('gamesContainer').innerHTML =
+                    `<div class="error">Unable to load schedule. Please check your internet connection and try refreshing.</div>`;
             }
 
-            // Schedule next refresh
             setTimeout(loadData, 4 * 60 * 60 * 1000);
         }
-        
-        // Initial load
+
         loadData();
     </script>
 </body>
