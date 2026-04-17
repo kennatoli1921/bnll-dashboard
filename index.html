@@ -1256,26 +1256,21 @@
                 <label>Additional Details</label>
                 <textarea id="mnt-details" placeholder="Describe the issue or what's needed…"></textarea>
             </div>
-            <button class="maintenance-submit" onclick="submitMaintenance()">Send Request</button>
+            <button class="maintenance-submit" id="mnt-submit">Send Request</button>
         </div>`;
-    }
-
-    function submitMaintenance() {
-        const name    = document.getElementById('mnt-name').value.trim();
-        const field   = document.getElementById('mnt-field').value;
-        const type    = document.getElementById('mnt-type').value;
-        const details = document.getElementById('mnt-details').value.trim();
-        if (!name || !field || !type) {
-            alert('Please fill in your name, field, and request type.');
-            return;
-        }
-        const body = `Name: ${name}\nField: ${field}\nRequest Type: ${type}\nDetails: ${details || 'None'}`;
-        const mailto = `mailto:ken.natoli@gmail.com?subject=${encodeURIComponent('BNLL Field Maintenance Request - ' + type)}&body=${encodeURIComponent(body)}`;
-        const a = document.createElement('a');
-        a.href = mailto;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        document.getElementById('mnt-submit').addEventListener('click', function() {
+            const name    = document.getElementById('mnt-name').value.trim();
+            const field   = document.getElementById('mnt-field').value;
+            const type    = document.getElementById('mnt-type').value;
+            const details = document.getElementById('mnt-details').value.trim();
+            if (!name || !field || !type) {
+                alert('Please fill in your name, field, and request type.');
+                return;
+            }
+            const body = `Name: ${name}\nField: ${field}\nRequest Type: ${type}\nDetails: ${details || 'None'}`;
+            const mailto = `mailto:ken.natoli@gmail.com?subject=${encodeURIComponent('BNLL Field Maintenance Request - ' + type)}&body=${encodeURIComponent(body)}`;
+            window.open(mailto, '_self');
+        });
     }
 
     // ── Data parsing ──────────────────────────────────────────────────────────
